@@ -93,8 +93,8 @@ ENV/
 .idea/
 .idea/*
 
-# Files to store clusters
-.clust
+# Files to store data
+Storage
 
 # DB files
-.db
+*.db
