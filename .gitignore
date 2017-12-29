@@ -94,5 +94,7 @@ ENV/
 .idea/*
 
 # Files to store clusters
-
 .clust
+
+# DB files
+.db
