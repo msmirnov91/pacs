@@ -1,7 +1,7 @@
 import peewee
 
-
-db = peewee.SqliteDatabase("loaded_data.db")
+DB_PATH = "/home/guru/pacs/Storage/loaded_data.db"
+db = peewee.SqliteDatabase(DB_PATH)
 
 
 class LoadedData(peewee.Model):

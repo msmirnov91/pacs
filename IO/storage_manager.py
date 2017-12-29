@@ -13,6 +13,10 @@ class StorageManager(object):
     RESULT_FILES_DIR = 'Files'
     RESULT_EXT = '.clust'
 
+    @classmethod
+    def get_all_rows(cls):
+        return LoadedData.select()
+
     def get_loaded(self, name):
         db_row = LoadedData.get(LoadedData.name == name)
 
@@ -27,7 +31,7 @@ class StorageManager(object):
         result_file_path = os.path.join(result_file_dir, result_file_name)
         data.get_data().to_csv(result_file_path)
 
-        new_db_row = LoadedData(path=data.data_name,
+        new_db_row = LoadedData(path=result_file_path,
                                 name=data.data_name,
                                 comment=data.user_comment,
                                 alg=data.clustering_alg_name,
@@ -55,22 +59,6 @@ class StorageManager(object):
         pass
 
 if __name__ == "__main__":
-    """
-    results = LoadedData.select()
-    amount = len(results)
-
-    if amount % 2 == 0:
-        new_data = LoadedData(path='test path',
-                              name='test{}'.format(amount),
-                              comment='test comment',
-                              alg='dbscan',
-                              alg_param='1')
-    else:
-        new_data = LoadedData(path='test path',
-                              name='test{}'.format(amount),
-                              alg_param='1')
-    new_data.save()
-    """
-    results = LoadedData.select()
-    for result in results:
-        print('path: {} name: {}  comment: {}'.format(result.path, result.name, result.comment))
+    rows = StorageManager().get_all_rows()
+    for row in rows:
+        print('path: {} name: {}  comment: {}'.format(row.path, row.name, row.comment))
