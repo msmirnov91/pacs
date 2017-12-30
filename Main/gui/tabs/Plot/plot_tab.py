@@ -1,7 +1,5 @@
-
-
 from Main.gui.tabs.abstract_tab_widget import AbstractTab
-from Visualizer.gui.Plot.cluster_plot import ClusterPlot
+from Visualizer.Widgets.Plot.cluster_plot import ClusterPlot
 
 
 class PlotTab(AbstractTab):
@@ -13,9 +11,8 @@ class PlotTab(AbstractTab):
         self.cluster_plot = ClusterPlot()
         self.plot_layout.addWidget(self.cluster_plot)
 
-    def plot_one_cluster(self, x, y, color, label):
-        self.cluster_plot.plot_one_cluster(x, y, color, label)
-
-    def redraw(self):
-        self.cluster_plot.redraw()
+    def update_tab(self, data):
+        x = "x0"
+        y = "x1"
+        self.change_visualization_widget_to(self.visualizer.get_cluster_plot(data, x, y))
 

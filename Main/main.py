@@ -2,10 +2,9 @@ from PyQt4 import uic
 from PyQt4.QtGui import *
 
 from IO.storage_manager import StorageManager
-from Visualizer.visualizer import Visualizer
 
 from IO.gui.load_widget import LoadWidget
-from Main.gui.tabs.Info.data_info_tabt import DataInfoTab
+from Main.gui.tabs.Info.data_info_tab import DataInfoTab
 from Main.gui.tabs.Plot.plot_tab import PlotTab
 from Main.gui.tabs.Comparison.comparison_tab import ComparisonTab
 from Main.gui.tabs.Representation.representation_tab import RepresentationTab
@@ -17,7 +16,7 @@ class PACS(QMainWindow):
         super(PACS, self).__init__(parent)
         uic.loadUi("Main/main.ui", self)
 
-        tabs = [
+        self.tabs = [
             DataInfoTab(),
             PlotTab(),
             ComparisonTab(),
@@ -25,10 +24,8 @@ class PACS(QMainWindow):
             AdviserTab()
         ]
 
-        for tab in tabs:
-            index = tabs.index(tab)
-            print(tab.name)
-            self.add_or_replace_tab(index, tab.name, tab)
+        for tab in self.tabs:
+            self.tab_main.addTab(tab, tab.name)
 
         self._data_1 = None
         self._data_2 = None
@@ -41,10 +38,6 @@ class PACS(QMainWindow):
     def connect_signals_and_slots(self):
         self.btn_load_new.clicked.connect(self.load_new_data)
         self.btn_select.clicked.connect(self.select_data)
-
-    def add_or_replace_tab(self, index, name, new_widget):
-        self.tab_main.removeTab(index)
-        self.tab_main.insertTab(index, new_widget, name)
 
     def load_new_data(self):
         self.load_widget.show()
@@ -73,7 +66,11 @@ class PACS(QMainWindow):
         self.list_data.setModel(data_list_model)
 
     def update_tabs(self):
-        self.set_tab_data_info(DataInfoTab(self._data_1))
+        for tab in self.tabs:
+            if tab.need_two_data_sets:
+                tab.update_tab(self._data_1, self._data_2)
+            else:
+                tab.update_tab(self._data_1)
 
     def main(self):
         self.show()

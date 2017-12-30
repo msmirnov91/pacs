@@ -13,6 +13,7 @@ class ComparisonTab(AbstractTab):
         ui_file = "Comparison/comparison_gui.ui"
         super(ComparisonTab, self).__init__(ui_file, parent)
         self.pie_rep = None
+        self.need_two_data_sets = True
         self.name = "Сравнение"
 
         # amount_of_clusters_first = splitting1.clusters_amount()
@@ -53,6 +54,9 @@ class ComparisonTab(AbstractTab):
         pass
         # self.update_validity_scores()
         # self.compare_clusters(self.splitting1.clusters[0], self.splitting2)
+
+    def update_tab(self, data1, data2):
+        print("comparison tab updated")
 
 
 if __name__ == '__main__':

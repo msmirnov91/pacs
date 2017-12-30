@@ -1,5 +1,5 @@
 from PyQt4 import QtGui
-from Visualizer.gui.matplotlib_widget import MatplotlibWidget
+from Visualizer.Widgets.matplotlib_widget import MatplotlibWidget
 import sys
 
 

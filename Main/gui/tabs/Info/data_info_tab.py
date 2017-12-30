@@ -7,7 +7,7 @@ class DataInfoTab(AbstractTab):
         super(DataInfoTab, self).__init__(ui_file, parent)
         self.name = "Информация"
 
-    def set_data(self, data):
+    def update_tab(self, data):
         self.le_name.setText(data.data_name)
         self.le_alg.setText(data.clustering_alg_name)
         self.le_alg_param.setText(data.clustering_alg_params)
