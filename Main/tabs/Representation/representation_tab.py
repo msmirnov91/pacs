@@ -2,7 +2,7 @@ import sys
 
 from PyQt4.QtGui import *
 
-from Main.gui.tabs.abstract_tab_widget import AbstractTab
+from Main.tabs.abstract_tab_widget import AbstractTab
 
 # from Algorithms.clustering.clustering_algorithm_factory import ClusteringAlgorithmFactory
 # from Algorithms.validation.validation_algorithms_factory import calculate_validity_indexes

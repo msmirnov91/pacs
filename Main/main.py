@@ -1,15 +1,13 @@
+from Main.tabs.Adviser.adviser_tab import AdviserTab
+from Main.tabs.Comparison.comparison_tab import ComparisonTab
+from Main.tabs.Info.data_info_tab import DataInfoTab
+from Main.tabs.Representation.representation_tab import RepresentationTab
 from PyQt4 import uic
 from PyQt4.QtGui import *
 
-from IO.storage_manager import StorageManager
-
-# TODO: put them all in one file!
 from IO.gui.load_widget import LoadWidget
-from Main.gui.tabs.Info.data_info_tab import DataInfoTab
-from Main.gui.tabs.Plot.plot_tab import PlotTab
-from Main.gui.tabs.Comparison.comparison_tab import ComparisonTab
-from Main.gui.tabs.Representation.representation_tab import RepresentationTab
-from Main.gui.tabs.Adviser.adviser_tab import AdviserTab
+from IO.storage_manager import StorageManager
+from Main.tabs.Plot.plot_tab import PlotTab
 
 
 class PACS(QMainWindow):

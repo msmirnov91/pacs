@@ -1,4 +1,4 @@
-from Main.gui.tabs.abstract_tab_widget import AbstractTab
+from Main.tabs.abstract_tab_widget import AbstractTab
 
 
 class DataInfoTab(AbstractTab):

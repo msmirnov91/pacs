@@ -1,12 +1,12 @@
 import matplotlib.cm as cm
 import numpy as np
 
+from Processor.processor import Processor
 # TODO: put them all in one file!
 from Visualizer.Widgets.Plot.cluster_plot import ClusterPlot
 from Visualizer.Widgets.Representation.box_with_whisers_rep import BoxWithWhiskers
 from Visualizer.Widgets.Representation.bar_rep import Bar
-from Visualizer.Widgets.Representation.color_distance_matrix_rep import ColorMatrix
-from Visualizer.Widgets.Representation.validity_vector_rep import ValidityVectorRep
+from Visualizer.Widgets.Representation.matrix_rep import MatrixRep
 
 
 # TODO: make decorators!
@@ -52,14 +52,23 @@ class Visualizer(object):
 
     def get_color_matrix(self, data):
         if not data.is_clusterized():
-            return ColorMatrix()
+            return MatrixRep()
 
-        matrix = ColorMatrix()
-        matrix.plot_matrix(data)
+        matrix = MatrixRep()
+        matrix.plot_matrix(data.get_distance_matrix(), data.get_labels_list())
         return matrix
 
     def get_validity_vector(self, data):
-        pass
+        if not data.is_clusterized():
+            return MatrixRep()
+        vector = MatrixRep()
+
+        matrix = []
+        for i in range(0, data.clusters_amount()):
+            matrix.append(Processor().get_db_for_cluster(data, i))
+
+        vector.plot_matrix([matrix], data.get_labels_list())
+        return vector
 
     def visualize_representation(self, data):
         pass

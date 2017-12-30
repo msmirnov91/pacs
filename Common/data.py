@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from scipy.spatial.distance import squareform, pdist
 
 from Common.metrics import euclidean_distance
@@ -94,6 +95,12 @@ class Data(object):
             center.append((maximum + minimum) / 2)
 
         return pd.Series(center, index=cluster.columns.values)
+
+    def get_cluster_centers(self):
+        centers = np.ndarray((self.clusters_amount(), self.dimension))
+        for label in self.get_labels_list():
+            np.append(centers, self.get_cluster_center(label).as_matrix())
+        return centers
 
     def get_cluster_column(self, label, coord):
         cluster = self.cluster(label)

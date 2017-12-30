@@ -1,11 +1,8 @@
 import sys
 
-# from Algorithms.validation.validation_algorithms_factory import calculate_splitting_comparison
-# from Algorithms.validation.validation_algorithms_factory import calculate_validity_indexes
-# from GUI.Comparison.pie_representations import PieDiagramm
 from PyQt4.QtGui import *
 
-from Main.gui.tabs.abstract_tab_widget import AbstractTab
+from Main.tabs.abstract_tab_widget import AbstractTab
 
 
 class ComparisonTab(AbstractTab):

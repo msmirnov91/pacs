@@ -1,11 +1,11 @@
-from Visualizer.Widgets.Representation.abstract_matrix_rep import AbstractMatrixRep
+from Visualizer.Widgets.matplotlib_widget import MatplotlibWidget
 
 
-class ColorMatrix(AbstractMatrixRep):
+class MatrixRep(MatplotlibWidget):
     def __init__(self, parent=None):
-        super(ColorMatrix, self).__init__(parent)
+        super(MatrixRep, self).__init__(parent)
 
-    def make_matrix_and_labels(self, data):
+    def plot_matrix(self, matrix, labels):
         """
         Examples:
             https://matplotlib.org/examples/pylab_examples/matshow.html
@@ -14,5 +14,7 @@ class ColorMatrix(AbstractMatrixRep):
             https://stackoverflow.com/questions/34781096/matplotlib-matshow-with-many-string-labels
 
         """
-        self.matrix = data.get_distance_matrix()
+
+        matrix_plot = self.ax.matshow(matrix)
+        self.figure.colorbar(matrix_plot)
 

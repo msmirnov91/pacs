@@ -4,7 +4,7 @@ from sklearn.metrics import silhouette_score
 from sklearn.metrics import adjusted_rand_score
 from sklearn.metrics import adjusted_mutual_info_score
 
-from Processor.Validity.Davies_Bouldin_Index_KMeans.index import compute_DB_index
+from Processor.Validity.Davies_Bouldin_Index_KMeans.index import compute_DB_index, compute_R
 from Processor.Validity.Dunn.dunn_sklearn import dunn
 
 
@@ -23,13 +23,18 @@ class Processor(object):
             return 0
 
         n_clusters = data.clusters_amount()
-        centers = np.ndarray((n_clusters, data.dimension))
-        for label in data.get_labels_list():
-            np.append(centers, data.get_cluster_center(label).as_matrix())
-
+        centers = data.get_cluster_centers()
         labels = data.get_data_labels()
-        print(labels)
         return compute_DB_index(data, labels, centers, n_clusters)
+
+    @classmethod
+    def get_db_for_cluster(cls, data, cluster_number):
+        if not data.is_clusterized():
+            return 0
+        n_clusters = data.clusters_amount()
+        centers = data.get_cluster_centers()
+        labels = data.get_data_labels()
+        return compute_R(cluster_number, data, labels, centers, n_clusters)
 
     @classmethod
     def get_silhouette(cls, data):
