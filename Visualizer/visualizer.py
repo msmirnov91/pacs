@@ -9,6 +9,7 @@ from Visualizer.Widgets.Representation.color_distance_matrix_rep import ColorMat
 from Visualizer.Widgets.Representation.validity_vector_rep import ValidityVectorRep
 
 
+# TODO: make decorators!
 class Visualizer(object):
     def get_bww(self, data):
         if not data.is_clusterized():
@@ -44,7 +45,7 @@ class Visualizer(object):
     def get_dense_distribution(self, data):
         if not data.is_clusterized():
             return Bar()
-        
+
         dense_distribution = Bar()
         dense_distribution.make_bars(data)
         return dense_distribution
@@ -70,7 +71,7 @@ class Visualizer(object):
 
                 plot.plot_one_cluster(cluster[x], cluster[y], color, label)
         else:
-            plot.plot_one_cluster(data.get_data()[x], data.get_data()[y], 'black', 'data')
+            plot.plot_one_cluster(data.get_dataframe()[x], data.get_dataframe()[y], 'black', 'data')
 
         return plot
 

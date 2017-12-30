@@ -1,4 +1,5 @@
 import pandas as pd
+from scipy.spatial.distance import squareform, pdist
 
 from Common.metrics import euclidean_distance
 
@@ -17,7 +18,7 @@ class Data(object):
     def set_data(self, new_data):
         self._data = new_data
 
-    def get_data(self):
+    def get_dataframe(self):
         return self._data
 
     def clusterize(self, algorithm):
@@ -31,6 +32,9 @@ class Data(object):
             self._data.reset_index()
 
     def clusters_amount(self):
+        if not self.is_clusterized():
+            return 0
+
         unique_labels = self.get_labels_list()
         # lack_of_the_time
         negative_labels_amount = 0
@@ -58,6 +62,10 @@ class Data(object):
     @property
     def amount_of_elements(self):
         return self._data.shape[0]
+
+    @property
+    def dimension(self):
+        return self._data.shape[1]
 
     def amount_of_elements_in_cluster(self, label):
         return self.cluster(label).shape[0]
@@ -102,6 +110,9 @@ class Data(object):
         for i in range(0, len(self._data.columns)):
             sigmas.append(self.get_sigma(label, self._data.columns[i]))
         return peak_type(sigmas)
+
+    def get_distance_matrix(self):
+        return squareform(pdist(self._data))
 
     def save_to_file(self, file_path):
         self._data.to_csv(file_path)

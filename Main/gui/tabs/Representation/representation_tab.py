@@ -152,6 +152,18 @@ class RepresentationTab(AbstractTab):
             return
         self.change_visualization_widget_to(new_widget)
 
+        dunn = self.processor.get_dunn(data)
+        db = self.processor.get_db(data)
+        silhouette = self.processor.get_silhouette(data)
+
+        self.dunn_value.setText(self.index_val_pattern.format(dunn))
+        self.db_value.setText(self.index_val_pattern.format(db))
+        self.silhouette_value.setText(self.index_val_pattern.format(silhouette))
+
+        self.cluster_amount_display.setText(str(data.clusters_amount()))
+        self.cluster_number
+        self.elements_list
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     v = RepresentationTab()
