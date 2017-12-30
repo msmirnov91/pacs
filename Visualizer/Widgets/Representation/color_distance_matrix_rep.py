@@ -1,10 +1,5 @@
-import sys
-
-from PyQt4.QtGui import QApplication
-
-from DataStructures.splitting import Splitting
-from GUI.Representation.abstract_matrix_rep import AbstractMatrixRep
-from Auxiliary.metrics import euclidean_distance
+from Visualizer.Widgets.Representation.abstract_matrix_rep import AbstractMatrixRep
+from Common.metrics import euclidean_distance
 
 
 class ColorMatrix(AbstractMatrixRep):
@@ -42,12 +37,3 @@ class ColorMatrix(AbstractMatrixRep):
             """
 
             self.matrix, self.labels = self.splitting.get_distance_matrix_rep()
-
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    test_splitting = Splitting()
-    test_splitting.string_generate('r4(4,4)(1,1)ro e4(1,1)(1,1)g+')
-    rep = ColorMatrix(test_splitting)
-    rep.show()
-    sys.exit(app.exec_())

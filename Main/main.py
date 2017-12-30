@@ -3,6 +3,7 @@ from PyQt4.QtGui import *
 
 from IO.storage_manager import StorageManager
 
+# TODO: put them all in one file!
 from IO.gui.load_widget import LoadWidget
 from Main.gui.tabs.Info.data_info_tab import DataInfoTab
 from Main.gui.tabs.Plot.plot_tab import PlotTab

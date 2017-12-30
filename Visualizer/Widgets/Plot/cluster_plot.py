@@ -1,6 +1,4 @@
-import matplotlib.pyplot as plt
-
-from Visualizer.Widgets.matplotlib_widget import MatplotlibWidget
+from Visualizer.Widgets.matplotlib_widget import MatplotlibWidget, plt
 
 
 class ClusterPlot(MatplotlibWidget):

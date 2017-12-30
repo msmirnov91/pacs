@@ -1,12 +1,12 @@
 from PyQt4.QtGui import QApplication
-from GUI.Representation.rep_widget import RepWidget
+from Visualizer.Widgets.matplotlib_widget import MatplotlibWidget
 import sys
 import numpy as np
 
 
-class Bar(RepWidget):
+class Bar(MatplotlibWidget):
     def __init__(self, splitting, parent=None):
-        super(Bar, self).__init__(splitting, parent)
+        super(Bar, self).__init__(parent)
 
     def plot(self):
         quart_amount = 4

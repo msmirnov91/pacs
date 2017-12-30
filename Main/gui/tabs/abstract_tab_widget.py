@@ -27,9 +27,11 @@ class AbstractTab(QWidget):
         pass
 
     def change_visualization_widget_to(self, new_widget):
-        curr_widget = self.plot_layout.takeAt(0).widget()
-        self.plot_layout.removeWidget(curr_widget)
-        curr_widget.deleteLater()
+        curr_widget_item = self.plot_layout.takeAt(0)
+        if curr_widget_item is not None:
+            curr_widget = curr_widget_item.widget()
+            self.plot_layout.removeWidget(curr_widget)
+            curr_widget.deleteLater()
         self.plot_layout.addWidget(new_widget)
 
     def update_tab(self, data):

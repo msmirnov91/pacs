@@ -1,10 +1,4 @@
-import sys
-
-from PyQt4.QtGui import QApplication
-
-from DataStructures.splitting import Splitting
-from GUI.Representation.abstract_matrix_rep import AbstractMatrixRep
-from Algorithms.validation.validity.davies_bolduin import calc_davies_bolduin_for_cluster
+from Visualizer.Widgets.Representation.abstract_matrix_rep import AbstractMatrixRep
 
 
 class ValidityVectorRep(AbstractMatrixRep):
@@ -25,16 +19,8 @@ class ValidityVectorRep(AbstractMatrixRep):
         row = []
         for label in self.splitting.get_unique_labels():
             cluster = self.splitting.cluster(label)
-            db_index = calc_davies_bolduin_for_cluster(cluster, self.splitting)
+            db_index = 0
             row.append(db_index)
             self.labels.append(str(label))
         self.matrix.append(row)
 
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    test_splitting = Splitting()
-    test_splitting.string_generate('r4(4,4)(1,1)ro e4(1,1)(1,1)g+')
-    rep = ValidityVectorRep(test_splitting)
-    rep.show()
-    sys.exit(app.exec_())

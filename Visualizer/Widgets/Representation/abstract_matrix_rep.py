@@ -1,11 +1,11 @@
-from GUI.Representation.rep_widget import RepWidget
+from Visualizer.Widgets.matplotlib_widget import MatplotlibWidget
 
 
-class AbstractMatrixRep(RepWidget):
+class AbstractMatrixRep(MatplotlibWidget):
     def __init__(self, splitting, parent=None):
         self.matrix = []
         self.labels = ['']
-        super(AbstractMatrixRep, self).__init__(splitting, parent)
+        super(AbstractMatrixRep, self).__init__(parent)
 
     def plot(self):
         self.make_matrix_and_labels()

@@ -135,7 +135,18 @@ class RepresentationTab(AbstractTab):
         for rep in self.reps:
             rep.update_splitting(splitting)
 """
-
+    def update_tab(self, data):
+        if self.bww.isChecked():
+            new_widget = self.visualizer.get_bww(data)
+        elif self.dens_distribution.isChecked():
+            new_widget = self.visualizer.get_dense_distribution(data)
+        elif self.color_matrix.isChecked():
+            new_widget = self.visualizer.get_color_matrix(data)
+        elif self.validity_vector.isChecked():
+            new_widget = self.visualizer.get_validity_vector(data)
+        else:
+            return
+        self.change_visualization_widget_to(new_widget)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

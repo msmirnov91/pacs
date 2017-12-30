@@ -18,6 +18,8 @@ class MatplotlibWidget(QWidget):
         layout.addWidget(self.canvas)
         self.setLayout(layout)
 
+        self.ax = self.figure.add_subplot(1, 1, 1)
+
         # self.redraw()
 
     def redraw(self):
