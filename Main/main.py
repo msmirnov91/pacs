@@ -40,6 +40,9 @@ class PACS(QMainWindow):
         self.btn_load_new.clicked.connect(self.load_new_data)
         self.btn_select.clicked.connect(self.select_data)
 
+        for tab in self.tabs:
+            tab.data_update_required.connect(self.update_tabs)
+
     def load_new_data(self):
         self.load_widget.show()
 

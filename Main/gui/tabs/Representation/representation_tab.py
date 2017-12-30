@@ -19,6 +19,10 @@ class RepresentationTab(AbstractTab):
         ui_file = "Representation/representation_gui.ui"
         super(RepresentationTab, self).__init__(ui_file, parent)
         self.name = "Представление"
+
+        self.bww.toggled.connect(self.emit_update_required_signal)
+        self.dens_distribution.toggled.connect(self.emit_update_required_signal)
+
         """
         self.splitting = splitting
         if splitting.is_empty():

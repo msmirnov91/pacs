@@ -42,7 +42,12 @@ class Visualizer(object):
         return bww
 
     def get_dense_distribution(self, data):
-        pass
+        if not data.is_clusterized():
+            return Bar()
+        
+        dense_distribution = Bar()
+        dense_distribution.make_bars(data)
+        return dense_distribution
 
     def get_color_matrix(self, data):
         pass
