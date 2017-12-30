@@ -35,9 +35,6 @@ class MatplotlibWidget(QWidget):
         # refresh canvas
         self.canvas.draw()
 
-    def plot(self):
-        pass
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

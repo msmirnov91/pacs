@@ -22,6 +22,8 @@ class RepresentationTab(AbstractTab):
 
         self.bww.toggled.connect(self.emit_update_required_signal)
         self.dens_distribution.toggled.connect(self.emit_update_required_signal)
+        self.color_matrix.toggled.connect(self.emit_update_required_signal)
+        self.validity_vector.toggled.connect(self.emit_update_required_signal)
 
         """
         self.splitting = splitting

@@ -51,7 +51,12 @@ class Visualizer(object):
         return dense_distribution
 
     def get_color_matrix(self, data):
-        pass
+        if not data.is_clusterized():
+            return ColorMatrix()
+
+        matrix = ColorMatrix()
+        matrix.plot_matrix(data)
+        return matrix
 
     def get_validity_vector(self, data):
         pass

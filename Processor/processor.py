@@ -1,8 +1,11 @@
 import numpy as np
 
+from sklearn.metrics import silhouette_score
+from sklearn.metrics import adjusted_rand_score
+from sklearn.metrics import adjusted_mutual_info_score
+
 from Processor.Validity.Davies_Bouldin_Index_KMeans.index import compute_DB_index
 from Processor.Validity.Dunn.dunn_sklearn import dunn
-from sklearn.metrics import silhouette_score
 
 
 # TODO: make decorators!
@@ -35,3 +38,17 @@ class Processor(object):
 
         return silhouette_score(data.get_dataframe().as_matrix(),
                                 data.get_data_labels())
+
+    @classmethod
+    def get_ari(cls, data1, data2):
+        if not data1.is_clusterized() or not data2.is_clusterized():
+            return 0
+
+        return adjusted_rand_score(data1.get_data_labels(), data2.get_data_labels())
+
+    @classmethod
+    def get_ami(cls, data1, data2):
+        if not data1.is_clusterized() or not data2.is_clusterized():
+            return 0
+
+        return adjusted_mutual_info_score(data1.get_data_labels(), data2.get_data_labels())
