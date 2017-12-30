@@ -3,9 +3,10 @@ from PyQt4 import uic
 from PyQt4.QtGui import *
 
 
-class AbstractVisualizer(QWidget):
+class AbstractTab(QWidget):
     def __init__(self, ui_file, parent=None):
-        super(AbstractVisualizer, self).__init__(parent)
+        super(AbstractTab, self).__init__(parent)
+        self.name = None
         self.index_val_pattern = "{:4.2f}"
         ui_path = self.get_full_path(ui_file)
         uic.loadUi(ui_path, self)

@@ -1,54 +1,79 @@
 from PyQt4 import uic
 from PyQt4.QtGui import *
 
-from Generator.generator import Generator
 from IO.storage_manager import StorageManager
-from Processor.processor import Processor
 from Visualizer.visualizer import Visualizer
 
 from IO.gui.load_widget import LoadWidget
+from Main.gui.tabs.Info.data_info_tabt import DataInfoTab
+from Main.gui.tabs.Plot.plot_tab import PlotTab
+from Main.gui.tabs.Comparison.comparison_tab import ComparisonTab
+from Main.gui.tabs.Representation.representation_tab import RepresentationTab
+from Main.gui.tabs.Adviser.adviser_tab import AdviserTab
 
 
 class PACS(QMainWindow):
-
     def __init__(self, parent=None):
         super(PACS, self).__init__(parent)
         uic.loadUi("Main/main.ui", self)
 
+        tabs = [
+            DataInfoTab(),
+            PlotTab(),
+            ComparisonTab(),
+            RepresentationTab(),
+            AdviserTab()
+        ]
+
+        for tab in tabs:
+            index = tabs.index(tab)
+            print(tab.name)
+            self.add_or_replace_tab(index, tab.name, tab)
+
+        self._data_1 = None
+        self._data_2 = None
+
         self.load_widget = LoadWidget()
 
-        self.set_tab_data_info(Visualizer.get_empty())
-        self.set_tab_show_data(Visualizer.get_empty())
-        self.set_tab_clusterize(Visualizer.get_empty())
-        self.set_tab_compare(Visualizer.get_empty())
-        self.set_tab_represent(Visualizer.get_empty())
-        self.set_tab_get_advise(Visualizer.get_empty())
-
         self.connect_signals_and_slots()
-
-    def set_tab_data_info(self, new_widget):
-        self.tab_main.insertTab(0, new_widget, "Информация")
-
-    def set_tab_show_data(self, new_widget):
-        self.tab_main.insertTab(1, new_widget, "Проекция")
-
-    def set_tab_clusterize(self, new_widget):
-        self.tab_main.insertTab(2, new_widget, "Кластеризовать")
-
-    def set_tab_compare(self, new_widget):
-        self.tab_main.insertTab(3, new_widget, "Сравнение")
-
-    def set_tab_represent(self, new_widget):
-        self.tab_main.insertTab(4, new_widget, "Представление")
-
-    def set_tab_get_advise(self, new_widget):
-        self.tab_main.insertTab(5, new_widget, "ПППР")
+        self.update_data_list()
 
     def connect_signals_and_slots(self):
         self.btn_load_new.clicked.connect(self.load_new_data)
+        self.btn_select.clicked.connect(self.select_data)
+
+    def add_or_replace_tab(self, index, name, new_widget):
+        self.tab_main.removeTab(index)
+        self.tab_main.insertTab(index, new_widget, name)
 
     def load_new_data(self):
         self.load_widget.show()
+
+    def select_data(self):
+        selected_items = self.list_data.selectedIndexes()
+        items_amount = len(selected_items)
+
+        if items_amount == 1:
+            self._data_1 = StorageManager().get_loaded(selected_items[0].data())
+            self._data_2 = None
+        elif items_amount == 2:
+            self._data_1 = StorageManager().get_loaded(selected_items[0].data())
+            self._data_2 = StorageManager().get_loaded(selected_items[1].data())
+        else:
+            return
+
+        self.update_tabs()
+
+    def update_data_list(self):
+        data_list_model = QStandardItemModel(self.list_data)
+        names = StorageManager().get_all_names()
+        for name in names:
+            item = QStandardItem(name)
+            data_list_model.appendRow(item)
+        self.list_data.setModel(data_list_model)
+
+    def update_tabs(self):
+        self.set_tab_data_info(DataInfoTab(self._data_1))
 
     def main(self):
         self.show()

@@ -1,18 +1,17 @@
 import os
 
 from PyQt4 import uic
-from PyQt4.QtGui import QWidget, QFileDialog
+from PyQt4.QtGui import QDialog, QFileDialog
 
 from IO.storage_manager import StorageManager
 
 
-class LoadWidget(QWidget):
+class LoadWidget(QDialog):
     def __init__(self, parent=None):
         super(LoadWidget, self).__init__(parent)
-        uic.loadUi("IO/gui/load.ui", self)
+        uic.loadUi("IO/gui/load_dialog.ui", self)
 
         self.btn_choose.clicked.connect(self.choose)
-        self.btn_load.clicked.connect(self.load)
 
     def choose(self):
         dialog = QFileDialog()
@@ -20,7 +19,7 @@ class LoadWidget(QWidget):
         file_name = dialog.getOpenFileName(self, 'Open file with data', raw_files_dir)
         self.le_path.setText(file_name)
 
-    def load(self):
+    def accept(self):
         name = self.le_name.text()
         if name is None or name == "":
             self.close()

@@ -1,25 +1,24 @@
 import sys
+
+# from Algorithms.validation.validation_algorithms_factory import calculate_splitting_comparison
+# from Algorithms.validation.validation_algorithms_factory import calculate_validity_indexes
+# from GUI.Comparison.pie_representations import PieDiagramm
 from PyQt4.QtGui import *
 
-from GUI.Comparison.pie_representations import PieDiagramm
-from Visualizer.gui.abstract_visualizer_widget import AbstractVisualizer
-from Algorithms.validation.validation_algorithms_factory import calculate_validity_indexes
-from Algorithms.validation.validation_algorithms_factory import calculate_splitting_comparison
+from Main.gui.tabs.abstract_tab_widget import AbstractTab
 
 
-class ComparisonVisualizer(AbstractVisualizer):
-    def __init__(self, splitting1=None, splitting2=None, parent=None):
+class ComparisonTab(AbstractTab):
+    def __init__(self, parent=None):
         ui_file = "Comparison/comparison_gui.ui"
-        self.splitting1 = splitting1
-        self.splitting2 = splitting2
+        super(ComparisonTab, self).__init__(ui_file, parent)
         self.pie_rep = None
+        self.name = "Сравнение"
 
-        super(ComparisonVisualizer, self).__init__(ui_file, parent)
-
-        amount_of_clusters_first = splitting1.clusters_amount()
-        amount_of_clusters_second = splitting2.clusters_amount()
-        self.amount_of_clusters_first_splitting.setText(str(amount_of_clusters_first))
-        self.amount_of_clusters_second_splitting.setText(str(amount_of_clusters_second))
+        # amount_of_clusters_first = splitting1.clusters_amount()
+        # amount_of_clusters_second = splitting2.clusters_amount()
+        # self.amount_of_clusters_first_splitting.setText(str(amount_of_clusters_first))
+        # self.amount_of_clusters_second_splitting.setText(str(amount_of_clusters_second))
 
         # self.pie_cluster.setMaximum(len(self.splitting1.clusters))
         # self.pie_cluster.valueChanged.connect(self.choose_cluster_to_pie)
@@ -51,12 +50,13 @@ class ComparisonVisualizer(AbstractVisualizer):
         self.compare_clusters(self.splitting1.clusters[cluster_number - 1], self.splitting2)
 
     def adjustVisualizer(self):
-        self.update_validity_scores()
+        pass
+        # self.update_validity_scores()
         # self.compare_clusters(self.splitting1.clusters[0], self.splitting2)
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    v = ComparisonVisualizer()
+    v = ComparisonTab()
     v.show()
     sys.exit(app.exec_())

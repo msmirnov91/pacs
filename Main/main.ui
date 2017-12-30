@@ -27,27 +27,34 @@
        <string>Данные</string>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="1" column="0">
+       <item row="4" column="0">
+        <widget class="QPushButton" name="btn_save">
+         <property name="text">
+          <string>Сохранить результат</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
         <widget class="QPushButton" name="btn_load_new">
          <property name="text">
           <string>Загрузить данные</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="QListView" name="list_data"/>
-       </item>
-       <item row="2" column="0">
+       <item row="3" column="0">
         <widget class="QPushButton" name="btn_generate">
          <property name="text">
           <string>Сгенерировать данные</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QPushButton" name="btn_save">
+       <item row="0" column="0">
+        <widget class="QListView" name="list_data"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QPushButton" name="btn_select">
          <property name="text">
-          <string>Сохранить результат</string>
+          <string>Выбрать</string>
          </property>
         </widget>
        </item>

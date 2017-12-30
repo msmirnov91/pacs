@@ -17,13 +17,17 @@ class StorageManager(object):
     def get_all_rows(cls):
         return LoadedData.select()
 
+    def get_all_names(self):
+        rows = self.get_all_rows()
+        names = []
+        for row in rows:
+            names.append(row.name)
+        return names
+
     def get_loaded(self, name):
         db_row = LoadedData.get(LoadedData.name == name)
-
-        data = self.load(db_row.path+self.RESULT_EXT, db_row.name, db_row.comment, has_headers=True)
-        data.clustering_alg_name = db_row.alg
-        data.clustering_alg_params = db_row.alg_params
-        return data
+        csv_data = self._load_csv(db_row.path, has_headers=True)
+        return Data(csv_data, db_row.name, db_row.comment, db_row.alg, db_row.alg_param)
 
     def store(self, data):
         result_file_name = data.data_name + self.RESULT_EXT
@@ -39,6 +43,13 @@ class StorageManager(object):
         new_db_row.save()
 
     def load(self, path, name, comment, has_headers=False):
+        data = self._load_csv(path, has_headers)
+        new_data = Data(data, name, comment)
+        self.store(new_data)
+        return new_data
+
+    @classmethod
+    def _load_csv(cls, path, has_headers=False):
         if path is None or path == "":
             return
 
@@ -51,9 +62,7 @@ class StorageManager(object):
                 column_names.append("x{}".format(i))
             data.columns = column_names
 
-        new_data = Data(data, name, comment)
-        self.store(new_data)
-        return new_data
+        return data
 
     def remove(self, name):
         pass

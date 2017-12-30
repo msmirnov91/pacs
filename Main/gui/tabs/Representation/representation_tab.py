@@ -2,20 +2,24 @@ import sys
 
 from PyQt4.QtGui import *
 
-from Algorithms.clustering.clustering_algorithm_factory import ClusteringAlgorithmFactory
-from Algorithms.validation.validation_algorithms_factory import calculate_validity_indexes
-from DataStructures.splitting import Splitting
-from GUI.Representation.bar_rep import Bar
-from GUI.Representation.box_with_whisers_rep import BoxWithWhiskers
-from GUI.Representation.color_distance_matrix_rep import ColorMatrix
-from GUI.Representation.validity_vector_rep import ValidityVectorRep
-from GUI.abstract_visualizer import AbstractVisualizer
+from Main.gui.tabs.abstract_tab_widget import AbstractTab
+
+# from Algorithms.clustering.clustering_algorithm_factory import ClusteringAlgorithmFactory
+# from Algorithms.validation.validation_algorithms_factory import calculate_validity_indexes
+# from DataStructures.splitting import Splitting
+# from GUI.Representation.bar_rep import Bar
+# from GUI.Representation.box_with_whisers_rep import BoxWithWhiskers
+# from GUI.Representation.color_distance_matrix_rep import ColorMatrix
+# from GUI.Representation.validity_vector_rep import ValidityVectorRep
+# from GUI.abstract_visualizer import AbstractVisualizer
 
 
-class ClusteringVisualizer(AbstractVisualizer):
-    def __init__(self, splitting, parent=None):
+class RepresentationTab(AbstractTab):
+    def __init__(self, parent=None):
         ui_file = "Representation/representation_gui.ui"
-
+        super(RepresentationTab, self).__init__(ui_file, parent)
+        self.name = "Представление"
+        """
         self.splitting = splitting
         if splitting.is_empty():
             self.splitting.string_generate('r200(4,4)(6,55)ro r300(4,4)(7,77)ro e100(1,2)(7,88)g+')
@@ -28,7 +32,6 @@ class ClusteringVisualizer(AbstractVisualizer):
                      ValidityVectorRep(splitting=self.splitting)]
 
         self.clustering_algorithm_factory = ClusteringAlgorithmFactory()
-        super(ClusteringVisualizer, self).__init__(ui_file, parent)
 
         for algorithm in self.clustering_algorithm_factory.algorithms:
             self.algorithm.addItem(algorithm.name)
@@ -131,10 +134,11 @@ class ClusteringVisualizer(AbstractVisualizer):
         self.splitting = splitting
         for rep in self.reps:
             rep.update_splitting(splitting)
+"""
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    v = ClusteringVisualizer(Splitting())
+    v = RepresentationTab()
     v.show()
     sys.exit(app.exec_())

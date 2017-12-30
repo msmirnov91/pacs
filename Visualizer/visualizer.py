@@ -1,9 +1,8 @@
-import numpy as np
-import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+import numpy as np
 
-from Visualizer.gui.Plot.plot_visualizer import PlotVisualizer
-from Visualizer.gui.Empty.empty_widget import EmptyWidget
+from Main.gui.tabs.Empty.empty_widget import EmptyWidget
+from Main.gui.tabs.Plot.plot_tab import PlotTab
 
 
 class Visualizer(object):
@@ -13,8 +12,8 @@ class Visualizer(object):
     def visualize_representation(self, data):
         pass
 
-    def visualize_data_on_axis(self, data, coord1, coord2):
-        visualizer = PlotVisualizer()
+    def make_scatter_plot(self, data, coord1, coord2):
+        visualizer = PlotTab()
 
         x = coord1
         y = coord2
@@ -27,6 +26,8 @@ class Visualizer(object):
             visualizer.plot_one_cluster(cluster[x], cluster[y], color, label)
 
         visualizer.show()
+
+        return PlotTab()
 
     @classmethod
     def get_empty(cls):
