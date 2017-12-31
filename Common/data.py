@@ -7,6 +7,7 @@ from Common.metrics import euclidean_distance
 
 class Data(object):
     LABELS_COLUMN_NAME = 'cls'
+    DISTANCES_COLUMN_NAME = 'dist'
     _data = None
 
     def __init__(self, name, comment='', alg_name='', alg_params=''):
@@ -95,6 +96,36 @@ class Data(object):
             center.append((maximum + minimum) / 2)
 
         return pd.Series(center, index=cluster.columns.values)
+
+    def get_elements_in_range(self, label, dist_range):
+        elements = self._add_distances_column(label)
+        elements_in_range = elements[elements[self.DISTANCES_COLUMN_NAME].isin(dist_range)]
+        del elements_in_range[self.DISTANCES_COLUMN_NAME]
+        return elements_in_range
+
+    def _add_distances_column(self, label=None, normalized=True):
+        # this method makes the dataframe from elements
+        # with addition column which is distances from
+        # the center of given cluster
+        if label is None or not self.is_clusterized():
+            cluster = self.get_dataframe()
+        else:
+            cluster = self.cluster(label)
+
+        result = pd.DataFrame(cluster)
+        distances = []
+        radius = self.get_cluster_radius(label)
+        center = self.get_cluster_center(label)
+        for _, element in cluster.iterrows():
+            if normalized:
+                distance = euclidean_distance(center, element) / radius
+            else:
+                distance = euclidean_distance(center, element)
+
+            distances.append(distance)
+
+        result[self.DISTANCES_COLUMN_NAME] = distances
+        return result
 
     def get_cluster_centers(self):
         centers = np.ndarray((self.clusters_amount(), self.dimension))

@@ -2,6 +2,7 @@ import matplotlib.cm as cm
 import numpy as np
 
 from Processor.processor import Processor
+from Common.metrics import euclidean_distance
 # TODO: put them all in one file!
 from Visualizer.Widgets.Plot.cluster_plot import ClusterPlot
 from Visualizer.Widgets.Representation.box_with_whisers_rep import BoxWithWhiskers
@@ -11,7 +12,8 @@ from Visualizer.Widgets.Representation.matrix_rep import MatrixRep
 
 # TODO: make decorators!
 class Visualizer(object):
-    def get_bww(self, data):
+    @classmethod
+    def get_bww(cls, data):
         if not data.is_clusterized():
             return BoxWithWhiskers()
 
@@ -42,15 +44,27 @@ class Visualizer(object):
         bww.plot_bww(representation, widths)
         return bww
 
-    def get_dense_distribution(self, data):
-        if not data.is_clusterized():
+    @classmethod
+    def get_dense_distribution(cls, data):
+        if not data.is_clusterized() or data.amount_of_elements == 1:
             return Bar()
 
+        parts = [0.25, 0.5, 0.75, 1]
+
+        bar_rep = []
+        for part in parts:
+            row = []
+            for label in data.get_labels_list():
+                elements = data.get_elements_in_range(label, (0, part))
+                row.append(elements.shape[0])
+            bar_rep.append(row)
+
         dense_distribution = Bar()
-        dense_distribution.make_bars(data)
+        dense_distribution.make_bars(np.asarray(bar_rep))
         return dense_distribution
 
-    def get_color_matrix(self, data):
+    @classmethod
+    def get_color_matrix(cls, data):
         if not data.is_clusterized():
             return MatrixRep()
 
@@ -58,7 +72,8 @@ class Visualizer(object):
         matrix.plot_matrix(data.get_distance_matrix(), data.get_labels_list())
         return matrix
 
-    def get_validity_vector(self, data):
+    @classmethod
+    def get_validity_vector(cls, data):
         if not data.is_clusterized():
             return MatrixRep()
         vector = MatrixRep()

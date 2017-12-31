@@ -53,7 +53,7 @@ class ComparisonTab(AbstractTab):
         # self.compare_clusters(self.splitting1.clusters[0], self.splitting2)
 
     def update_tab(self, data1, data2):
-        print("comparison tab updated")
+        pass
 
 
 if __name__ == '__main__':

@@ -6,51 +6,25 @@ class Bar(MatplotlibWidget):
     def __init__(self, parent=None):
         super(Bar, self).__init__(parent)
 
-    def make_bars(self, data):
-        quart_amount = 4
-        # distance from cluster center that limits the quartile
-        quartile_length = 0
+    def make_bars(self, bar_representation):
+        """
+        Examples:
+            https://matplotlib.org/devdocs/gallery/misc/table_demo.html#sphx-glr-gallery-misc-table-demo-py
+        """
 
-        cluster_amount = data.clusters_amount()
-
-        ind = np.arange(cluster_amount)  # the x locations for the groups
-        width = 0.35  # the width of the bars: can also be len(x) sequence
-
-        bottoms = None
-        for i in range(0, quart_amount):
+        if bar_representation is None:
             heights = []
-            for j in range(0, cluster_amount):
+            for j in range(0, 2):
                 heights.append(2)
+            plt.bar(np.arange(2), heights, 0.35)
+            return
 
-            plt.bar(left=ind, height=heights, width=width, bottom=bottoms)
-            bottoms = self.make_new_bottoms(bottoms, heights)
-
-    def plot(self):
-        quart_amount = 4
-        # distance from cluster center that limits the quartile
-        quartile_length = 0
-
-        cluster_amount = self.splitting.clusters_amount()
-
+        rows_amount = bar_representation.shape[0]
+        cluster_amount = bar_representation.shape[1]
         ind = np.arange(cluster_amount)  # the x locations for the groups
+        y_offset = np.zeros(cluster_amount)
         width = 0.35  # the width of the bars: can also be len(x) sequence
 
-        bottoms = None
-        for i in range(0, quart_amount):
-            heights = []
-            for j in range(0, cluster_amount):
-                current_cluster = self.splitting.clusters[j]
-                quartile_length = current_cluster.get_next_quartile_radius(quartile_length)
-                heights.append(quartile_length)
-
-            self.ax.bar(left=ind, height=heights, width=width, bottom=bottoms)
-            bottoms = self.make_new_bottoms(bottoms, heights)
-
-    def make_new_bottoms(self, old_bottoms, heights):
-        new_bottoms = []
-        if old_bottoms is None:
-            new_bottoms = heights
-        else:
-            for i in range(0, len(heights)):
-                new_bottoms.append(old_bottoms[i] + heights[i])
-        return new_bottoms
+        for i in range(0, rows_amount):
+            plt.bar(ind, bar_representation[i], width, bottom=y_offset)
+            y_offset = y_offset + bar_representation[i]
