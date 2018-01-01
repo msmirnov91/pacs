@@ -4,14 +4,7 @@ import sys
 
 
 class PieDiagramm(MatplotlibWidget):
-    def __init__(self, cluster, splitting, parent=None):
-        self.cluster = cluster
-        self.splitting = splitting
-
-        self.sizes = None
-        self.labels = None
-        self.explode = None
-
+    def __init__(self, parent=None):
         super(PieDiagramm, self).__init__(parent)
 
     def __calculate_sizes(self):
@@ -43,12 +36,19 @@ class PieDiagramm(MatplotlibWidget):
             self.sizes.append(1 - matched_elements_part)
             self.explode += (0,)
 
-    def plot(self):
-        self.__calculate_sizes()
+    def plot_pie(self, sizes):
+        """
+        Examples:
+            https://matplotlib.org/examples/pie_and_polar_charts/pie_demo_features.html
+        """
+        labels = []
+        for size in sizes:
+            index = sizes.index(size)
+            labels.append(str(index))
+        labels[len(labels)-1] = 'unmatched'
 
-        self.ax.pie(self.sizes, explode=self.explode, labels=self.labels, autopct='%1.1f%%',
+        self.ax.pie(sizes, labels=labels, autopct='%1.1f%%',
                     shadow=True, startangle=90)
-        self.ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 
 
 if __name__ == '__main__':

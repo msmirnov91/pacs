@@ -8,6 +8,7 @@ from Visualizer.Widgets.Plot.cluster_plot import ClusterPlot
 from Visualizer.Widgets.Representation.box_with_whisers_rep import BoxWithWhiskers
 from Visualizer.Widgets.Representation.bar_rep import Bar
 from Visualizer.Widgets.Representation.matrix_rep import MatrixRep
+from Visualizer.Widgets.Comparison.pie_representations import PieDiagramm
 
 
 # TODO: make decorators!
@@ -103,4 +104,30 @@ class Visualizer(object):
             plot.plot_one_cluster(data.get_dataframe()[x], data.get_dataframe()[y], 'black', 'data')
 
         return plot
+
+    @classmethod
+    def get_pie(cls, cluster, data):
+        if not data.is_clusterized():
+            return PieDiagramm()
+
+        amounts = []
+        unmatched = 0
+
+        for i in data.get_labels_list():
+            amounts.append(0)
+
+        # lack_of_the_time
+        for _, element in cluster.iterrows():
+            label = data.get_label_of_element(element)
+            if label is None:
+                unmatched += 1
+            amounts[label] += 1
+        amounts.append(unmatched)
+
+        for amount in amounts:
+            amount /= cluster.shape[0]
+
+        pie = PieDiagramm()
+        pie.plot_pie(amounts)
+        return pie
 

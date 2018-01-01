@@ -103,6 +103,16 @@ class Data(object):
         del elements_in_range[self.DISTANCES_COLUMN_NAME]
         return elements_in_range
 
+    def get_label_of_element(self, element):
+        if not self.is_clusterized():
+            return None
+
+        for index, data_element in self._data.iterrows():
+            if data_element.equals(element):
+                return index
+
+        return None
+
     def _add_distances_column(self, label=None, normalized=True):
         # this method makes the dataframe from elements
         # with addition column which is distances from

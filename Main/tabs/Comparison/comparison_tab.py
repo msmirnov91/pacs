@@ -53,7 +53,34 @@ class ComparisonTab(AbstractTab):
         # self.compare_clusters(self.splitting1.clusters[0], self.splitting2)
 
     def update_tab(self, data1, data2):
-        pass
+        if data2 is None:
+            return
+
+        # maybe it will be better to pass needed cluster as Data object
+        self.change_visualization_widget_to(self.visualizer.get_pie(data1.cluster(0), data2))
+
+        ami = self.processor.get_ami(data1, data2)
+        ari = self.processor.get_ari(data1, data2)
+        self.le_adj_mut_info.setText(self.index_val_pattern.format(ami))
+        self.le_adj_rand.setText(self.index_val_pattern.format(ari))
+
+        self.amount_of_clusters_first_splitting.setText(str(data1.clusters_amount()))
+        self.amount_of_clusters_second_splitting.setText(str(data2.clusters_amount()))
+
+        dunn_1 = self.processor.get_dunn(data1)
+        dunn_2 = self.processor.get_dunn(data2)
+        self.dunn_value_1.setText(self.index_val_pattern.format(dunn_1))
+        self.dunn_value_2.setText(self.index_val_pattern.format(dunn_2))
+
+        db_1 = self.processor.get_db(data1)
+        db_2 = self.processor.get_db(data2)
+        self.db_value_1.setText(self.index_val_pattern.format(db_1))
+        self.db_value_2.setText(self.index_val_pattern.format(db_2))
+
+        silhouette_1 = self.processor.get_silhouette(data1)
+        silhouette_2 = self.processor.get_silhouette(data2)
+        self.silhouette_value_1.setText(self.index_val_pattern.format(silhouette_1))
+        self.silhouette_value_2.setText(self.index_val_pattern.format(silhouette_2))
 
 
 if __name__ == '__main__':
