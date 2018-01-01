@@ -1,7 +1,7 @@
-from Main.tabs.abstract_tab_widget import AbstractTab
+from Main.tabs.abstract_visualization_tab import AbstractVisualizationTab
 
 
-class ComparisonTab(AbstractTab):
+class ComparisonTab(AbstractVisualizationTab):
     def __init__(self, parent=None):
         ui_file = "Comparison/comparison_gui.ui"
         super(ComparisonTab, self).__init__(ui_file, parent)

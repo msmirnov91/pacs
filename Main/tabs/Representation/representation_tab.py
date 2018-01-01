@@ -2,7 +2,7 @@ import sys
 
 from PyQt4.QtGui import *
 
-from Main.tabs.abstract_tab_widget import AbstractTab
+from Main.tabs.abstract_visualization_tab import AbstractVisualizationTab
 
 # from Algorithms.clustering.clustering_algorithm_factory import ClusteringAlgorithmFactory
 # from Algorithms.validation.validation_algorithms_factory import calculate_validity_indexes
@@ -14,7 +14,7 @@ from Main.tabs.abstract_tab_widget import AbstractTab
 # from GUI.abstract_visualizer import AbstractVisualizer
 
 
-class RepresentationTab(AbstractTab):
+class RepresentationTab(AbstractVisualizationTab):
     def __init__(self, parent=None):
         ui_file = "Representation/representation_gui.ui"
         super(RepresentationTab, self).__init__(ui_file, parent)

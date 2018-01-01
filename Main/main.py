@@ -1,6 +1,7 @@
 from PyQt4 import uic
 from PyQt4.QtGui import *
 
+from Processor.processor import Processor
 from IO.gui.load_widget import LoadWidget
 from IO.storage_manager import StorageManager
 # TODO: put them in one file
@@ -26,6 +27,8 @@ class PACS(QMainWindow):
             AdviserTab()
         ]
 
+        self.clustering_tab = self.tabs[2]
+
         for tab in self.tabs:
             self.tab_main.addTab(tab, tab.name)
 
@@ -43,7 +46,11 @@ class PACS(QMainWindow):
         self.btn_select.clicked.connect(self.select_data)
 
         for tab in self.tabs:
-            tab.data_update_required.connect(self.update_tabs)
+            if tab.is_visualization_tab:
+                tab.data_update_required.connect(self.update_tabs)
+            else:
+                # lack_of_the_time
+                tab.clusterize_data.connect(self.clusterize_data)
 
     def load_new_data(self):
         self.load_widget.show()
@@ -63,6 +70,15 @@ class PACS(QMainWindow):
 
         self.update_tabs()
 
+    def clusterize_data(self):
+        if self._data_1 is None:
+            return
+
+        alg, name = self.clustering_tab.get_algorithm_and_settings()
+        labels = Processor().get_cluster_labels(self._data_1, alg, name)
+        self._data_1.set_labels(labels)
+        self.update_tabs()
+
     def update_data_list(self):
         data_list_model = QStandardItemModel(self.list_data)
         names = StorageManager().get_all_names()
@@ -73,6 +89,9 @@ class PACS(QMainWindow):
 
     def update_tabs(self):
         for tab in self.tabs:
+            if not tab.is_visualization_tab:
+                continue
+
             if tab.need_two_data_sets:
                 tab.update_tab(self._data_1, self._data_2)
             else:

@@ -61,9 +61,8 @@ class Data(object):
     def set_labels(self, labels):
         print(self._data)
         self._drop_labels()
-        print(self._data)
         self._data[self.LABELS_COLUMN_NAME] = labels
-        self._data.set_index(self.LABELS_COLUMN_NAME)
+        self._data = self._data.set_index(self.LABELS_COLUMN_NAME)
         print(self._data)
 
     @property
@@ -175,9 +174,16 @@ class Data(object):
             return
 
         if has_headers:
+
             self._data = pd.read_csv(path)
-            if self.LABELS_COLUMN_NAME in list(self._data):
+
+            headers = list(self._data)
+            bad_header = "Unnamed: 0"
+
+            if self.LABELS_COLUMN_NAME in headers:
                 self._data = self._data.set_index(self.LABELS_COLUMN_NAME)
+            if bad_header in headers:
+                self._data = self._data.loc[:, ~self._data.columns.str.contains('^Unnamed')]
         else:
             self._data = pd.read_csv(path, header=None)
             column_names = []

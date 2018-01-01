@@ -1,7 +1,7 @@
-from Main.tabs.abstract_tab_widget import AbstractTab
+from Main.tabs.abstract_visualization_tab import AbstractVisualizationTab
 
 
-class AdviserTab(AbstractTab):
+class AdviserTab(AbstractVisualizationTab):
     def __init__(self, parent=None):
         ui_file = "Adviser/adviser_gui.ui"
         super(AdviserTab, self).__init__(ui_file, parent)

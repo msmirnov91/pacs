@@ -1,7 +1,7 @@
-from Main.tabs.abstract_tab_widget import AbstractTab
+from Main.tabs.abstract_visualization_tab import AbstractVisualizationTab
 
 
-class DataInfoTab(AbstractTab):
+class DataInfoTab(AbstractVisualizationTab):
     def __init__(self, parent=None):
         ui_file = "Info/data_info.ui"
         super(DataInfoTab, self).__init__(ui_file, parent)

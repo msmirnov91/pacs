@@ -1,8 +1,8 @@
-from Main.tabs.abstract_tab_widget import AbstractTab
+from Main.tabs.abstract_visualization_tab import AbstractVisualizationTab
 from Visualizer.Widgets.Plot.cluster_plot import ClusterPlot
 
 
-class PlotTab(AbstractTab):
+class PlotTab(AbstractVisualizationTab):
     def __init__(self, parent=None):
         ui_file = "Plot/plot.ui"
         super(PlotTab, self).__init__(ui_file, parent)
