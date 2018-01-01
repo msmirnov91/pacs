@@ -4,10 +4,11 @@ from PyQt4.QtGui import *
 from IO.gui.load_widget import LoadWidget
 from IO.storage_manager import StorageManager
 # TODO: put them in one file
+from Main.tabs.Info.data_info_tab import DataInfoTab
 from Main.tabs.Plot.plot_tab import PlotTab
+from Main.tabs.Clustering.clustering_tab import ClusteringTab
 from Main.tabs.Adviser.adviser_tab import AdviserTab
 from Main.tabs.Comparison.comparison_tab import ComparisonTab
-from Main.tabs.Info.data_info_tab import DataInfoTab
 from Main.tabs.Representation.representation_tab import RepresentationTab
 
 
@@ -19,6 +20,7 @@ class PACS(QMainWindow):
         self.tabs = [
             DataInfoTab(),
             PlotTab(),
+            ClusteringTab(),
             ComparisonTab(),
             RepresentationTab(),
             AdviserTab()

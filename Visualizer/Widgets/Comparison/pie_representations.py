@@ -36,7 +36,7 @@ class PieDiagramm(MatplotlibWidget):
             self.sizes.append(1 - matched_elements_part)
             self.explode += (0,)
 
-    def plot_pie(self, sizes):
+    def plot_pie(self, sizes, unmatched):
         """
         Examples:
             https://matplotlib.org/examples/pie_and_polar_charts/pie_demo_features.html
@@ -45,7 +45,10 @@ class PieDiagramm(MatplotlibWidget):
         for size in sizes:
             index = sizes.index(size)
             labels.append(str(index))
-        labels[len(labels)-1] = 'unmatched'
+
+        if unmatched is not None and unmatched != 0:
+            sizes.append(unmatched)
+            labels.append('unmatched')
 
         self.ax.pie(sizes, labels=labels, autopct='%1.1f%%',
                     shadow=True, startangle=90)

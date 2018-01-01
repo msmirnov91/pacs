@@ -23,9 +23,6 @@ class Data(object):
     def get_dataframe(self):
         return self._data
 
-    def clusterize(self, algorithm):
-        pass
-
     def _drop_labels(self):
         if self.LABELS_COLUMN_NAME in self._data.columns:
             self._data.drop(self.LABELS_COLUMN_NAME)
@@ -60,6 +57,14 @@ class Data(object):
 
     def get_data_labels(self):
         return self._data.index
+
+    def set_labels(self, labels):
+        print(self._data)
+        self._drop_labels()
+        print(self._data)
+        self._data[self.LABELS_COLUMN_NAME] = labels
+        self._data.set_index(self.LABELS_COLUMN_NAME)
+        print(self._data)
 
     @property
     def amount_of_elements(self):

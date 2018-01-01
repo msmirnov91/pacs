@@ -1,8 +1,9 @@
-import numpy as np
-
 from sklearn.metrics import silhouette_score
 from sklearn.metrics import adjusted_rand_score
 from sklearn.metrics import adjusted_mutual_info_score
+
+from Processor.Clustering.kmeans import AlgKMEANS
+from Processor.Clustering.dbscan import AlgDBSCAN
 
 from Processor.Validity.Davies_Bouldin_Index_KMeans.index import compute_DB_index, compute_R
 from Processor.Validity.Dunn.dunn_sklearn import dunn
@@ -10,6 +11,29 @@ from Processor.Validity.Dunn.dunn_sklearn import dunn
 
 # TODO: make decorators!
 class Processor(object):
+    def __init__(self):
+        self.clustering_algorithms = [
+            AlgKMEANS(),
+            AlgDBSCAN()
+        ]
+
+    def get_clustering_algorithm_names(self):
+        names = []
+        for algorithm in self.clustering_algorithms:
+            names.append(algorithm.name)
+        return names
+
+    def get_cluster_labels(self, data, alg_name, alg_settings):
+        alg = None
+        for clustering_alg in self.clustering_algorithms:
+            if clustering_alg.name == alg_name:
+                alg = clustering_alg
+
+        if alg is None:
+            return
+
+        return alg.get_labels(data, alg_settings)
+
     @classmethod
     def get_dunn(cls, data):
         if not data.is_clusterized():

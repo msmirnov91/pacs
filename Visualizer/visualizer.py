@@ -122,12 +122,8 @@ class Visualizer(object):
             if label is None:
                 unmatched += 1
             amounts[label] += 1
-        amounts.append(unmatched)
-
-        for amount in amounts:
-            amount /= cluster.shape[0]
 
         pie = PieDiagramm()
-        pie.plot_pie(amounts)
+        pie.plot_pie(amounts, unmatched)
         return pie
 

@@ -1,7 +1,3 @@
-import sys
-
-from PyQt4.QtGui import *
-
 from Main.tabs.abstract_tab_widget import AbstractTab
 
 
@@ -9,7 +5,6 @@ class ComparisonTab(AbstractTab):
     def __init__(self, parent=None):
         ui_file = "Comparison/comparison_gui.ui"
         super(ComparisonTab, self).__init__(ui_file, parent)
-        self.pie_rep = None
         self.need_two_data_sets = True
         self.name = "Сравнение"
 
@@ -81,10 +76,3 @@ class ComparisonTab(AbstractTab):
         silhouette_2 = self.processor.get_silhouette(data2)
         self.silhouette_value_1.setText(self.index_val_pattern.format(silhouette_1))
         self.silhouette_value_2.setText(self.index_val_pattern.format(silhouette_2))
-
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    v = ComparisonTab()
-    v.show()
-    sys.exit(app.exec_())
