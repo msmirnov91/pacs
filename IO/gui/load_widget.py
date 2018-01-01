@@ -23,7 +23,7 @@ class LoadWidget(QDialog):
         name = self.le_name.text()
         if name is None or name == "":
             self.close()
-            return
+            return self.Rejected
 
         path = self.le_path.text()
         comment = self.le_comment.text()

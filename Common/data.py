@@ -59,11 +59,9 @@ class Data(object):
         return self._data.index
 
     def set_labels(self, labels):
-        print(self._data)
         self._drop_labels()
         self._data[self.LABELS_COLUMN_NAME] = labels
         self._data = self._data.set_index(self.LABELS_COLUMN_NAME)
-        print(self._data)
 
     @property
     def amount_of_elements(self):
@@ -190,6 +188,7 @@ class Data(object):
             for i in range(0, len(self._data.columns)):
                 column_names.append("x{}".format(i))
             self._data.columns = column_names
+
 
 
 

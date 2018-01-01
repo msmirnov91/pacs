@@ -44,6 +44,7 @@ class PACS(QMainWindow):
     def connect_signals_and_slots(self):
         self.btn_load_new.clicked.connect(self.load_new_data)
         self.btn_select.clicked.connect(self.select_data)
+        self.btn_remove.clicked.connect(self.remove_data)
 
         for tab in self.tabs:
             if tab.is_visualization_tab:
@@ -52,8 +53,12 @@ class PACS(QMainWindow):
                 # lack_of_the_time
                 tab.clusterize_data.connect(self.clusterize_data)
 
+        # self.load_widget.accepted.connect(self.update_data_list)
+
     def load_new_data(self):
-        self.load_widget.show()
+        self.load_widget.exec_()
+        # lack_of_the_time
+        self.update_data_list()
 
     def select_data(self):
         selected_items = self.list_data.selectedIndexes()
@@ -70,13 +75,23 @@ class PACS(QMainWindow):
 
         self.update_tabs()
 
+    def remove_data(self):
+        storage_manager = StorageManager()
+        selected_items = self.list_data.selectedIndexes()
+        for item in selected_items:
+            storage_manager.remove_loaded(item.data())
+
+        self.update_data_list()
+
     def clusterize_data(self):
         if self._data_1 is None:
             return
 
-        alg, name = self.clustering_tab.get_algorithm_and_settings()
-        labels = Processor().get_cluster_labels(self._data_1, alg, name)
+        alg, params = self.clustering_tab.get_algorithm_and_settings()
+        labels = Processor().get_cluster_labels(self._data_1, alg, params)
         self._data_1.set_labels(labels)
+        self._data_1.clustering_alg_name = alg
+        self._data_1.clustering_alg_params = str(params)
         self.update_tabs()
 
     def update_data_list(self):

@@ -21,11 +21,19 @@ class StorageManager(object):
             names.append(row.name)
         return names
 
-    def get_loaded(self, name):
+    @classmethod
+    def get_loaded(cls, name):
         db_row = LoadedData.get(LoadedData.name == name)
         data = Data(db_row.name, db_row.comment, db_row.alg, db_row.alg_param)
         data.load_from_file(db_row.path, has_headers=True)
         return data
+
+    @classmethod
+    def remove_loaded(cls, name):
+        db_row = LoadedData.get(LoadedData.name == name)
+        if os.path.isfile(db_row.path):
+            os.remove(db_row.path)
+        db_row.delete_instance()
 
     def store(self, data):
         result_file_name = data.data_name + self.RESULT_EXT
@@ -45,9 +53,6 @@ class StorageManager(object):
         new_data.load_from_file(path, has_headers)
         self.store(new_data)
         return new_data
-
-    def remove(self, name):
-        pass
 
 if __name__ == "__main__":
     rows = StorageManager().get_all_rows()
