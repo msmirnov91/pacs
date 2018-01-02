@@ -50,9 +50,9 @@ class ComparisonTab(AbstractVisualizationTab):
         # self.compare_clusters(self.splitting1.clusters[0], self.splitting2)
 
     def update_tab(self, data1, data2):
-        if data2 is None:
+        if data1 is None or data2 is None:
             return
-
+        self._data = data1
         self._data_2 = data2
         self._update_tab()
 
