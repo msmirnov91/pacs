@@ -3,6 +3,8 @@ from PyQt4.QtGui import *
 
 from Processor.processor import Processor
 from IO.gui.load_widget import LoadWidget
+from IO.gui.save_widget import SaveWidget
+
 from IO.storage_manager import StorageManager
 # TODO: put them in one file
 from Main.tabs.Info.data_info_tab import DataInfoTab
@@ -42,8 +44,9 @@ class PACS(QMainWindow):
         self.update_data_list()
 
     def connect_signals_and_slots(self):
-        self.btn_load_new.clicked.connect(self.load_new_data)
         self.btn_select.clicked.connect(self.select_data)
+        self.btn_load_new.clicked.connect(self.load_new_data)
+        self.btn_save.clicked.connect(self.save_result)
         self.btn_remove.clicked.connect(self.remove_data)
 
         for tab in self.tabs:
@@ -52,8 +55,6 @@ class PACS(QMainWindow):
             else:
                 # lack_of_the_time
                 tab.clusterize_data.connect(self.clusterize_data)
-
-        # self.load_widget.accepted.connect(self.update_data_list)
 
     def load_new_data(self):
         self.load_widget.exec_()
@@ -74,6 +75,14 @@ class PACS(QMainWindow):
             return
 
         self.update_tabs()
+
+    def save_result(self):
+        if self._data_1 is None:
+            return
+
+        save_widget = SaveWidget(self._data_1)
+        save_widget.exec_()
+        self.update_data_list()
 
     def remove_data(self):
         storage_manager = StorageManager()
