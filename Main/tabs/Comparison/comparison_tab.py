@@ -8,6 +8,8 @@ class ComparisonTab(AbstractVisualizationTab):
         self.need_two_data_sets = True
         self.name = "Сравнение"
 
+        self._data_2 = None
+
         # amount_of_clusters_first = splitting1.clusters_amount()
         # amount_of_clusters_second = splitting2.clusters_amount()
         # self.amount_of_clusters_first_splitting.setText(str(amount_of_clusters_first))
@@ -51,28 +53,32 @@ class ComparisonTab(AbstractVisualizationTab):
         if data2 is None:
             return
 
-        # maybe it will be better to pass needed cluster as Data object
-        self.change_visualization_widget_to(self.visualizer.get_pie(data1.cluster(0), data2))
+        self._data_2 = data2
+        self._update_tab()
 
-        ami = self.processor.get_ami(data1, data2)
-        ari = self.processor.get_ari(data1, data2)
+    def _update_tab(self):
+        # maybe it will be better to pass needed cluster as Data object
+        self.change_visualization_widget_to(self.visualizer.get_pie(self._data.cluster(0), self._data_2))
+
+        ami = self.processor.get_ami(self._data, self._data_2)
+        ari = self.processor.get_ari(self._data, self._data_2)
         self.le_adj_mut_info.setText(self.index_val_pattern.format(ami))
         self.le_adj_rand.setText(self.index_val_pattern.format(ari))
 
-        self.amount_of_clusters_first_splitting.setText(str(data1.clusters_amount()))
-        self.amount_of_clusters_second_splitting.setText(str(data2.clusters_amount()))
+        self.amount_of_clusters_first_splitting.setText(str(self._data.clusters_amount()))
+        self.amount_of_clusters_second_splitting.setText(str(self._data_2.clusters_amount()))
 
-        dunn_1 = self.processor.get_dunn(data1)
-        dunn_2 = self.processor.get_dunn(data2)
+        dunn_1 = self.processor.get_dunn(self._data)
+        dunn_2 = self.processor.get_dunn(self._data_2)
         self.dunn_value_1.setText(self.index_val_pattern.format(dunn_1))
         self.dunn_value_2.setText(self.index_val_pattern.format(dunn_2))
 
-        db_1 = self.processor.get_db(data1)
-        db_2 = self.processor.get_db(data2)
+        db_1 = self.processor.get_db(self._data)
+        db_2 = self.processor.get_db(self._data_2)
         self.db_value_1.setText(self.index_val_pattern.format(db_1))
         self.db_value_2.setText(self.index_val_pattern.format(db_2))
 
-        silhouette_1 = self.processor.get_silhouette(data1)
-        silhouette_2 = self.processor.get_silhouette(data2)
+        silhouette_1 = self.processor.get_silhouette(self._data)
+        silhouette_2 = self.processor.get_silhouette(self._data_2)
         self.silhouette_value_1.setText(self.index_val_pattern.format(silhouette_1))
         self.silhouette_value_2.setText(self.index_val_pattern.format(silhouette_2))

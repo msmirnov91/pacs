@@ -37,8 +37,6 @@ class PACS(QMainWindow):
         self._data_1 = None
         self._data_2 = None
 
-        self.load_widget = LoadWidget()
-
         self.list_data.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.connect_signals_and_slots()
         self.update_data_list()
@@ -49,15 +47,11 @@ class PACS(QMainWindow):
         self.btn_save.clicked.connect(self.save_result)
         self.btn_remove.clicked.connect(self.remove_data)
 
-        for tab in self.tabs:
-            if tab.is_visualization_tab:
-                tab.data_update_required.connect(self.update_tabs)
-            else:
-                # lack_of_the_time
-                tab.clusterize_data.connect(self.clusterize_data)
+        self.tabs[2].clusterize_data.connect(self.clusterize_data)
 
     def load_new_data(self):
-        self.load_widget.exec_()
+        load_widget = LoadWidget()
+        load_widget.exec_()
         # lack_of_the_time
         self.update_data_list()
 

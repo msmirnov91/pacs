@@ -11,8 +11,8 @@ class PlotTab(AbstractVisualizationTab):
         self.cluster_plot = ClusterPlot()
         self.plot_layout.addWidget(self.cluster_plot)
 
-    def update_tab(self, data):
+    def _update_tab(self):
         x = "x0"
         y = "x1"
-        self.change_visualization_widget_to(self.visualizer.get_cluster_plot(data, x, y))
+        self.change_visualization_widget_to(self.visualizer.get_cluster_plot(self._data, x, y))
 
