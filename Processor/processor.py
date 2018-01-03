@@ -39,7 +39,14 @@ class Processor(object):
         if not data.is_clusterized():
             return 0
 
-        return dunn(data.get_data_labels(), data.get_distance_matrix())
+        # lack_of_the_time
+        new_data = data
+        
+        for label in data.get_labels_list():
+            if label < 0:
+                new_data.remove_cluster(label)
+
+        return dunn(new_data.get_data_labels(), new_data.get_distance_matrix())
 
     @classmethod
     def get_db(cls, data):

@@ -49,6 +49,9 @@ class Data(object):
             cluster = pd.DataFrame([cluster])
         return cluster
 
+    def remove_cluster(self, label):
+        self._data = self._data.loc[~self._data.index.isin([label])]
+
     def is_clusterized(self):
         return self._data.index.name == self.LABELS_COLUMN_NAME
 
