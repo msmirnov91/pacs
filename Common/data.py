@@ -55,6 +55,9 @@ class Data(object):
     def get_labels_list(self):
         return self.get_data_labels().unique()
 
+    def get_coords_list(self):
+        return list(self._data)
+
     def get_data_labels(self):
         return self._data.index
 
