@@ -17,6 +17,8 @@ class PlotTab(AbstractVisualizationTab):
         if len(coordinates) < 2:
             return
 
+        self.x1.clear()
+        self.x2.clear()
         for coordinate in coordinates:
             self.x1.addItem(coordinate)
             self.x2.addItem(coordinate)
