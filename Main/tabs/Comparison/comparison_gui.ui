@@ -330,6 +330,12 @@ QGroupBox::title {
      </item>
      <item row="0" column="2">
       <widget class="QGroupBox" name="groupBox_4">
+       <property name="minimumSize">
+        <size>
+         <width>604</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="styleSheet">
         <string notr="true"/>
        </property>
@@ -349,26 +355,6 @@ QGroupBox::title {
            <string>Выбор кластеров</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_5">
-           <item row="0" column="2">
-            <widget class="QLabel" name="label_4">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="3">
-            <widget class="QComboBox" name="comboBox_4"/>
-           </item>
-           <item row="0" column="1">
-            <widget class="QSpinBox" name="pie_cluster">
-             <property name="minimum">
-              <number>1</number>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_3">
              <property name="text">
@@ -376,6 +362,13 @@ QGroupBox::title {
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QSpinBox" name="pie_cluster">
+             <property name="minimum">
+              <number>1</number>
              </property>
             </widget>
            </item>

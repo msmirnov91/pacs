@@ -10,11 +10,6 @@ class PlotTab(AbstractVisualizationTab):
 
         self.cluster_plot = ClusterPlot()
         self.plot_layout.addWidget(self.cluster_plot)
-        self.connect_coordinate_comboboxes()
-
-    def connect_coordinate_comboboxes(self):
-        self.x1.currentIndexChanged.connect(self.show_selected_projection)
-        self.x2.currentIndexChanged.connect(self.show_selected_projection)
 
     def _update_tab(self):
         coordinates = self._data.get_coords_list()
@@ -22,18 +17,15 @@ class PlotTab(AbstractVisualizationTab):
         if len(coordinates) < 2:
             return
 
-        self.x1.currentIndexChanged.disconnect()
-        self.x2.currentIndexChanged.disconnect()
-
         for coordinate in coordinates:
             self.x1.addItem(coordinate)
             self.x2.addItem(coordinate)
 
-        self.connect_coordinate_comboboxes()
-
         self.x1.setCurrentIndex(0)
         self.x2.setCurrentIndex(1)
 
+        self.x1.currentIndexChanged.connect(self.show_selected_projection)
+        self.x2.currentIndexChanged.connect(self.show_selected_projection)
         self.show_selected_projection()
 
     def show_selected_projection(self):

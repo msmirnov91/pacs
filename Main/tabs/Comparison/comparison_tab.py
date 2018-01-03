@@ -54,11 +54,20 @@ class ComparisonTab(AbstractVisualizationTab):
             return
         self._data = data1
         self._data_2 = data2
+
+        clusters = self._data.clusters_amount()
+
+        self.pie_cluster.setRange(0, clusters-1)
+
+        self.pie_cluster.valueChanged.connect(self._update_tab)
+
         self._update_tab()
 
     def _update_tab(self):
         # maybe it will be better to pass needed cluster as Data object
-        self.change_visualization_widget_to(self.visualizer.get_pie(self._data.cluster(0), self._data_2))
+        cluster = self.pie_cluster.value()
+        self.change_visualization_widget_to(self.visualizer.get_pie(self._data.cluster(cluster),
+                                                                    self._data_2))
 
         ami = self.processor.get_ami(self._data, self._data_2)
         ari = self.processor.get_ari(self._data, self._data_2)
