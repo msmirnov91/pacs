@@ -68,13 +68,16 @@ class Generator(object):
                 else:
                     cluster[coord_name] = column
 
-            labels = np.ndarray(column_size)
+            labels = np.ndarray(column_size, dtype=int)
             labels.fill(i)
             cluster['cls'] = labels
 
             elements = elements.append(cluster)
         elements = elements.set_index(Data.LABELS_COLUMN_NAME)
 
-        return Data(elements, 'generated data')
+        data = Data('generated data')
+        data.set_data(elements)
+
+        return data
 
 

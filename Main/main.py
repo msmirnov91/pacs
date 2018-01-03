@@ -2,6 +2,7 @@ from PyQt4 import uic
 from PyQt4.QtGui import *
 
 from Processor.processor import Processor
+from Generator.generator_dialog import GeneratorDialog
 from IO.gui.load_widget import LoadWidget
 from IO.gui.save_widget import SaveWidget
 
@@ -44,6 +45,7 @@ class PACS(QMainWindow):
     def connect_signals_and_slots(self):
         self.btn_select.clicked.connect(self.select_data)
         self.btn_load_new.clicked.connect(self.load_new_data)
+        self.btn_generate.clicked.connect(self.generate_data)
         self.btn_save.clicked.connect(self.save_result)
         self.btn_remove.clicked.connect(self.remove_data)
 
@@ -69,6 +71,11 @@ class PACS(QMainWindow):
             return
 
         self.update_tabs()
+
+    def generate_data(self):
+        generate_dialog = GeneratorDialog()
+        generate_dialog.exec_()
+        self.update_data_list()
 
     def save_result(self):
         if self._data_1 is None:

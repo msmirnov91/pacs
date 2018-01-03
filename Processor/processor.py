@@ -41,7 +41,7 @@ class Processor(object):
 
         # lack_of_the_time
         new_data = data
-        
+
         for label in data.get_labels_list():
             if label < 0:
                 new_data.remove_cluster(label)
@@ -69,7 +69,7 @@ class Processor(object):
 
     @classmethod
     def get_silhouette(cls, data):
-        if not data.is_clusterized():
+        if not data.is_clusterized() or data.is_empty():
             return 0
 
         return silhouette_score(data.get_dataframe().as_matrix(),

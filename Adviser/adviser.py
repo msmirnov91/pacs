@@ -18,7 +18,15 @@ class Adviser(object):
         labels = Processor().get_cluster_labels(data, "dbscan", dbscan_settings)
         data.set_labels(labels)
 
+        # lack_of_the_time
+        for label in labels:
+            if label < 0:
+                data.remove_cluster(label)
         ind_1 = Processor.get_silhouette(data)
+
+        if data.is_empty:
+            advice.decision = "Плотностной алгоритм определил все точки как выбросные, нет возможности провести анализ"
+            return advice
 
         n_clust = data.clusters_amount()
         kmeans_settings = {'num_clusters': n_clust}

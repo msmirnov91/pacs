@@ -55,6 +55,9 @@ class Data(object):
     def is_clusterized(self):
         return self._data.index.name == self.LABELS_COLUMN_NAME
 
+    def is_empty(self):
+        return self._data.shape[0] == 0
+
     def get_labels_list(self):
         return self.get_data_labels().unique()
 
