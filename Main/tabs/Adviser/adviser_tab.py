@@ -23,9 +23,8 @@ class AdviserTab(AbstractVisualizationTab):
         self._data = data1
         self._data_2 = data2
 
-        self._update_tab()
-
     def _update_tab(self):
+        # TODO: spoils current data!!
         if self.choose_params.isChecked():
             advice = self.adviser.choose_params(self._data)
         elif self.compare.isChecked():
