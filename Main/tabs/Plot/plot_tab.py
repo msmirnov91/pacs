@@ -34,7 +34,8 @@ class PlotTab(AbstractVisualizationTab):
         x = self.x1.currentText()
         y = self.x2.currentText()
 
-        if x == y:
+        # lack_of_the_time
+        if x == y or x == '' or y == '':
             return
 
         self.change_visualization_widget_to(self.visualizer.get_cluster_plot(self._data, x, y))
