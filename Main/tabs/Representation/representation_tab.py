@@ -33,6 +33,6 @@ class RepresentationTab(AbstractVisualizationTab):
         self.db_value.setText(self.index_val_pattern.format(db))
         self.silhouette_value.setText(self.index_val_pattern.format(silhouette))
 
-        self.cluster_amount_display.setText(str(self._data.clusters_amount()))
-        self.cluster_number
+        self.cluster_amount_display.setText(str(self._data.clusters_amount()-1))
+        self.cluster_number.setRange(0, self._data.clusters_amount())
         self.elements_list
