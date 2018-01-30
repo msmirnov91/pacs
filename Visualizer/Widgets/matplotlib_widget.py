@@ -35,6 +35,10 @@ class MatplotlibWidget(QWidget):
         # refresh canvas
         self.canvas.draw()
 
+    def deleteLater(self):
+        plt.close(self.figure)
+        super().deleteLater()
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -1,6 +1,7 @@
 import peewee
 
-DB_PATH = "/home/guru/pacs/Storage/loaded_data.db"
+# DB_PATH = "/home/guru/pacs/Storage/loaded_data.db"
+DB_PATH = "/home/mikhail/pacs/Storage/loaded_data.db"
 db = peewee.SqliteDatabase(DB_PATH)
 
 
@@ -18,5 +19,5 @@ class LoadedData(peewee.Model):
 if __name__ == "__main__":
     try:
         LoadedData.create_table()
-    except peewee.OperationalError:
-        print("Table already exists!")
+    except peewee.OperationalError as err:
+        print(err)

@@ -1,5 +1,6 @@
 from PyQt4 import uic
 from PyQt4.QtGui import *
+import copy
 
 from Processor.processor import Processor
 from Generator.generator_dialog import GeneratorDialog
@@ -117,10 +118,15 @@ class PACS(QMainWindow):
             if not tab.is_visualization_tab:
                 continue
 
+            # to prevent data corrupting
+            data_1_copy = copy.deepcopy(self._data_1)
+
             if tab.need_two_data_sets:
-                tab.update_tab(self._data_1, self._data_2)
+                data_2_copy = copy.deepcopy(self._data_2)
+                tab.update_tab(self._data_1, data_2_copy)
             else:
-                tab.update_tab(self._data_1)
+
+                tab.update_tab(data_1_copy)
 
     def main(self):
         self.show()
