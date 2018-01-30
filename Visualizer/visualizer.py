@@ -113,15 +113,17 @@ class Visualizer(object):
         amounts = []
         unmatched = 0
 
+        # lack_of_the_time
         for i in data.get_labels_list():
             amounts.append(0)
 
-        # lack_of_the_time
         for _, element in cluster.iterrows():
             label = data.get_label_of_element(element)
+
             if label is None:
                 unmatched += 1
-            amounts[label] += 1
+            else:
+                amounts[label] += 1
 
         pie = PieDiagramm()
         pie.plot_pie(amounts, unmatched)

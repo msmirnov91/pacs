@@ -69,15 +69,16 @@ class Processor(object):
 
     @classmethod
     def get_silhouette(cls, data):
-        if not data.is_clusterized() or data.is_empty():
+        if not data.is_clusterized() or data.is_empty() or data.clusters_amount() == 1:
             return 0
 
-        return silhouette_score(data.get_dataframe().as_matrix(),
-                                data.get_data_labels())
+        return silhouette_score(data.get_dataframe().as_matrix(), data.get_data_labels())
 
     @classmethod
     def get_ari(cls, data1, data2):
         if not data1.is_clusterized() or not data2.is_clusterized():
+            return 0
+        if data1.amount_of_elements != data2.amount_of_elements:
             return 0
 
         return adjusted_rand_score(data1.get_data_labels(), data2.get_data_labels())
@@ -85,6 +86,8 @@ class Processor(object):
     @classmethod
     def get_ami(cls, data1, data2):
         if not data1.is_clusterized() or not data2.is_clusterized():
+            return 0
+        if data1.amount_of_elements != data2.amount_of_elements:
             return 0
 
         return adjusted_mutual_info_score(data1.get_data_labels(), data2.get_data_labels())
