@@ -1,8 +1,10 @@
 import peewee
+import os
 
-# DB_PATH = "/home/guru/pacs/Storage/loaded_data.db"
-DB_PATH = "/home/mikhail/pacs/Storage/loaded_data.db"
-db = peewee.SqliteDatabase(DB_PATH)
+
+DB_FILE_NAME = 'loaded_data.db'
+db_path = os.path.join(os.getcwd(), 'Storage', DB_FILE_NAME)
+db = peewee.SqliteDatabase(db_path)
 
 
 class LoadedData(peewee.Model):

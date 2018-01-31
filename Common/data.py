@@ -119,7 +119,7 @@ class Data(object):
             return None
 
         for index, data_element in self._data.iterrows():
-            if data_element.equals(element):
+            if np.allclose(data_element.values, element.values):
                 return index
 
         return None
