@@ -110,7 +110,9 @@ class Data(object):
 
     def get_elements_in_range(self, label, dist_range):
         elements = self._add_distances_column(label)
-        elements_in_range = elements[elements[self.DISTANCES_COLUMN_NAME].isin(dist_range)]
+        elements_in_range = elements.loc[(elements[self.DISTANCES_COLUMN_NAME] > dist_range[0]) &
+                                         (elements[self.DISTANCES_COLUMN_NAME] <= dist_range[1])]
+
         del elements_in_range[self.DISTANCES_COLUMN_NAME]
         return elements_in_range
 

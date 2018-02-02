@@ -2,8 +2,7 @@ import matplotlib.cm as cm
 import numpy as np
 
 from Processor.processor import Processor
-from Common.metrics import euclidean_distance
-# TODO: put them all in one file!
+# TODO: put them all in one module!
 from Visualizer.Widgets.Plot.cluster_plot import ClusterPlot
 from Visualizer.Widgets.Representation.box_with_whisers_rep import BoxWithWhiskers
 from Visualizer.Widgets.Representation.bar_rep import Bar
@@ -50,14 +49,18 @@ class Visualizer(object):
         if not data.is_clusterized() or data.amount_of_elements == 1:
             return Bar()
 
-        parts = [0.25, 0.5, 0.75, 1]
+        dist_ranges = [[0, 0.25],
+                       [0.25, 0.5],
+                       [0.5, 0.75],
+                       [0.75, 1]]
 
         bar_rep = []
-        for part in parts:
+        for dist_range in dist_ranges:
             row = []
             for label in data.get_labels_list():
-                elements = data.get_elements_in_range(label, (0, part))
-                row.append(elements.shape[0])
+                elements = data.get_elements_in_range(label, dist_range)
+                relative_elements_amount = elements.shape[0] / data.amount_of_elements_in_cluster(label)
+                row.append(relative_elements_amount)
             bar_rep.append(row)
 
         dense_distribution = Bar()

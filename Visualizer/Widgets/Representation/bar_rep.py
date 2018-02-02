@@ -12,6 +12,8 @@ class Bar(MatplotlibWidget):
             https://matplotlib.org/devdocs/gallery/misc/table_demo.html#sphx-glr-gallery-misc-table-demo-py
         """
 
+        colors = plt.cm.BuPu(np.linspace(0, 0.5, 4))  # 4 means amount of rows
+
         if bar_representation is None:
             heights = []
             for j in range(0, 2):
@@ -26,5 +28,5 @@ class Bar(MatplotlibWidget):
         width = 0.35  # the width of the bars: can also be len(x) sequence
 
         for i in range(0, rows_amount):
-            plt.bar(ind, bar_representation[i], width, bottom=y_offset)
+            plt.bar(ind, bar_representation[i], width, bottom=y_offset, color=colors[i])
             y_offset = y_offset + bar_representation[i]
