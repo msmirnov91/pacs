@@ -30,6 +30,9 @@ class Data(object):
         if self.is_clusterized():
             self._data.reset_index()
 
+    def order_by_labels(self):
+        self._data.sort_index(inplace=True)
+
     def clusters_amount(self):
         if not self.is_clusterized():
             return 0

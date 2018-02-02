@@ -69,11 +69,16 @@ class Visualizer(object):
 
     @classmethod
     def get_color_matrix(cls, data):
-        if not data.is_clusterized():
-            return MatrixRep()
-
         matrix = MatrixRep()
-        matrix.plot_matrix(data.get_distance_matrix(), data.get_labels_list())
+
+        if not data.is_clusterized():
+            return matrix
+
+        data.order_by_labels()
+
+        x_labels = y_labels = data.get_data_labels().tolist()
+
+        matrix.plot_matrix(data.get_distance_matrix(), x_labels, y_labels)
         return matrix
 
     @classmethod
@@ -86,7 +91,10 @@ class Visualizer(object):
         for i in range(0, data.clusters_amount()):
             matrix.append(Processor().get_db_for_cluster(data, i))
 
-        vector.plot_matrix([matrix], data.get_labels_list())
+        x_labels = data.get_labels_list().tolist()
+        y_labels = []
+
+        vector.plot_matrix([matrix], x_labels, y_labels)
         return vector
 
     def visualize_representation(self, data):
