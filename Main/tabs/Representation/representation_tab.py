@@ -13,6 +13,10 @@ class RepresentationTab(AbstractVisualizationTab):
         self.validity_vector.toggled.connect(self._update_tab)
 
     def _update_tab(self):
+        if self.sender().parent() == self.visualization_type and not self.sender().isChecked():
+            # signal from released radiobutton
+            return
+
         if self.bww.isChecked():
             new_widget = self.visualizer.get_bww(self._data)
         elif self.dens_distribution.isChecked():
@@ -33,6 +37,6 @@ class RepresentationTab(AbstractVisualizationTab):
         self.db_value.setText(self.index_val_pattern.format(db))
         self.silhouette_value.setText(self.index_val_pattern.format(silhouette))
 
-        self.cluster_amount_display.setText(str(self._data.clusters_amount()-1))
+        self.cluster_amount_display.setText(str(self._data.clusters_amount()))
         self.cluster_number.setRange(0, self._data.clusters_amount())
         self.elements_list
