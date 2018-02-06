@@ -8,10 +8,10 @@ from Common.metrics import euclidean_distance
 class Data(object):
     LABELS_COLUMN_NAME = 'cls'
     DISTANCES_COLUMN_NAME = 'dist'
-    _data = None
+    NAMES_COLUMN_NAME = 'name'
 
     def __init__(self, name, comment='', alg_name='', alg_params=''):
-        self.set_data(None)
+        self._data = None
         self.data_name = name
         self.user_comment = comment
         self.clustering_alg_name = alg_name
@@ -99,6 +99,7 @@ class Data(object):
     def get_cluster_center(self, label):
         cluster = self.cluster(label)
 
+        # TODO: use Pandas to calculate center
         max_vals = []
         min_vals = []
         for column in cluster.columns:

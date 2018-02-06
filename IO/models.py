@@ -1,9 +1,9 @@
 import peewee
 import os
 
+from IO import *
 
-DB_FILE_NAME = 'loaded_data.db'
-db_path = os.path.join(os.getcwd(), 'Storage', DB_FILE_NAME)
+db_path = os.path.join(os.getcwd(), STORAGE_DIR, DB_FILE_NAME)
 db = peewee.SqliteDatabase(db_path)
 
 
@@ -18,7 +18,7 @@ class LoadedData(peewee.Model):
         database = db
 
 
-if __name__ == "__main__":
+def create_db_table():
     try:
         LoadedData.create_table()
     except peewee.OperationalError as err:

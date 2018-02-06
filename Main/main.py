@@ -8,7 +8,7 @@ from IO.gui.load_widget import LoadWidget
 from IO.gui.save_widget import SaveWidget
 
 from IO.storage_manager import StorageManager
-# TODO: put them in one file
+# TODO: put them in one module
 from Main.tabs.Info.data_info_tab import DataInfoTab
 from Main.tabs.Plot.plot_tab import PlotTab
 from Main.tabs.Clustering.clustering_tab import ClusteringTab

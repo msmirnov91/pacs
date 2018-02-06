@@ -1,15 +1,11 @@
 import os
 
 from IO.models import LoadedData
+from IO import *
 from Common.data import Data
 
 
 class StorageManager(object):
-    STORAGE_DIR = 'Storage'
-    RAW_FILES_DIR = 'Raw'
-    RESULT_FILES_DIR = 'Files'
-    RESULT_EXT = '.clust'
-
     @classmethod
     def get_all_rows(cls):
         return LoadedData.select()
@@ -36,8 +32,8 @@ class StorageManager(object):
         db_row.delete_instance()
 
     def store(self, data):
-        result_file_name = data.data_name + self.RESULT_EXT
-        result_file_dir = os.path.join(self.STORAGE_DIR, self.RESULT_FILES_DIR)
+        result_file_name = data.data_name + RESULT_EXT
+        result_file_dir = os.path.join(STORAGE_DIR, RESULT_FILES_DIR)
         result_file_path = os.path.join(result_file_dir, result_file_name)
         data.save_to_file(result_file_path)
 
