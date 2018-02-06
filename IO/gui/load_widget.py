@@ -4,6 +4,7 @@ from PyQt4 import uic
 from PyQt4.QtGui import QDialog, QFileDialog
 
 from IO.storage_manager import StorageManager
+from IO import *
 
 
 class LoadWidget(QDialog):
@@ -15,7 +16,7 @@ class LoadWidget(QDialog):
 
     def choose(self):
         dialog = QFileDialog()
-        raw_files_dir = os.path.join(StorageManager.STORAGE_DIR, StorageManager.RAW_FILES_DIR)
+        raw_files_dir = os.path.join(STORAGE_DIR, RAW_FILES_DIR)
         file_name = dialog.getOpenFileName(self, 'Open file with data', raw_files_dir)
         self.le_path.setText(file_name)
 

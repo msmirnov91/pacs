@@ -13,6 +13,7 @@ class Generator(object):
             raise Exception("No settings received!")
         cluster_descriptions = settings.split(' ')
         elements = pd.DataFrame()
+        total_elements_amount = 0
 
         for i in range(0, len(cluster_descriptions)):
             description = cluster_descriptions[i]
@@ -22,6 +23,7 @@ class Generator(object):
             # search first digit en description(amount of elements)
             match = re.search("\d+", description)
             capacity = (int(match.group(0)))
+            total_elements_amount += capacity
 
             # search in description construction (means)(sigmas)
             match = re.search('\((?P<means>.+)\)\((?P<sigmas>.+)\)', description)
@@ -70,10 +72,12 @@ class Generator(object):
 
             labels = np.ndarray(column_size, dtype=int)
             labels.fill(i)
-            cluster['cls'] = labels
+            cluster[Data.LABELS_COLUMN_NAME] = labels
 
             elements = elements.append(cluster)
         elements = elements.set_index(Data.LABELS_COLUMN_NAME)
+        names = np.arange(total_elements_amount)
+        elements[Data.NAMES_COLUMN_NAME] = names
 
         data = Data('generated data')
         data.set_data(elements)
