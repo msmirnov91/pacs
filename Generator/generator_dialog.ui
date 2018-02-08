@@ -7,17 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>565</width>
-    <height>418</height>
+    <height>588</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QLineEdit" name="le_description"/>
-   </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -27,15 +24,40 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
+   <item row="1" column="0">
+    <widget class="QLineEdit" name="le_description"/>
+   </item>
+   <item row="1" column="1">
     <widget class="QPushButton" name="btn_generate">
      <property name="text">
       <string>Сгенерировать</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="2">
+   <item row="2" column="0" colspan="2">
     <layout class="QVBoxLayout" name="plot_layout"/>
+   </item>
+   <item row="0" column="0" colspan="2">
+    <widget class="QLabel" name="label">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>90</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Для генерации кластера используется строка вида &quot;an(m1,m2,...,mn)(s1,s2,...,sn)&quot;, где a – форма кластера (r – прямоугольная, е - эллиптическая), n - число элементов, mn - средние значения по каждой из координат, sn - среднеквадратичные отклонения по каждой из координат. Для генерации нескольких кластеров введите строки описаний через пробел.</string>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

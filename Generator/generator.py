@@ -16,6 +16,9 @@ class Generator(object):
 
         for i in range(0, len(cluster_descriptions)):
             description = cluster_descriptions[i]
+            if description == " ":
+                continue
+
             # get the form of cluster
             form = description[0]
 
