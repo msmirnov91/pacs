@@ -1,7 +1,9 @@
+import copy
+import os
+
 from PyQt4 import uic
 from PyQt4.QtGui import *
 from PyQt4.QtCore import QSize
-import copy
 
 from Processor.processor import Processor
 from Generator.generator_dialog import GeneratorDialog
@@ -22,7 +24,7 @@ class PACS(QMainWindow):
     def __init__(self, parent=None):
         super(PACS, self).__init__(parent)
         uic.loadUi("Main/main.ui", self)
-        self.setWindowIcon(QIcon("/home/mikhail/pacs/Main/img/icon.png"))
+        self.setWindowIcon(QIcon("Main/icon.gif"))
 
         self.tabs = [
             DataInfoTab(),

@@ -1,3 +1,5 @@
+from PyQt4.QtGui import QStandardItemModel, QStandardItem
+
 from Main.tabs.abstract_visualization_tab import AbstractVisualizationTab
 
 
@@ -11,6 +13,7 @@ class RepresentationTab(AbstractVisualizationTab):
         self.dens_distribution.toggled.connect(self._update_tab)
         self.color_matrix.toggled.connect(self._update_tab)
         self.validity_vector.toggled.connect(self._update_tab)
+        self.cluster_number.valueChanged.connect(self._update_tab)
 
     def _update_tab(self):
         if self.sender().parent() == self.visualization_type and not self.sender().isChecked():
@@ -39,4 +42,14 @@ class RepresentationTab(AbstractVisualizationTab):
 
         self.cluster_amount_display.setText(str(self._data.clusters_amount()))
         self.cluster_number.setRange(0, self._data.clusters_amount()-1)
-        self.elements_list
+
+        model = QStandardItemModel(self.elements_list)
+        if self._data.is_clusterized() and self._data.has_names():
+            names_df = self._data.get_element_names(cluster=self.cluster_number.value())
+            for name in list(names_df):
+                item = QStandardItem(str(name))
+                model.appendRow(item)
+        else:
+            model.clear()
+
+        self.elements_list.setModel(model)

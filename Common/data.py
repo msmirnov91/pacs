@@ -87,6 +87,12 @@ class Data(object):
     def get_data_labels(self):
         return self._data.index
 
+    def get_element_names(self, cluster=None):
+        if cluster is None:
+            return self._data[self.NAMES_COLUMN_NAME]
+        else:
+            return self.cluster(cluster, with_names=True)[self.NAMES_COLUMN_NAME]
+
     def set_labels(self, labels):
         self._drop_labels()
         self._data[self.LABELS_COLUMN_NAME] = labels
