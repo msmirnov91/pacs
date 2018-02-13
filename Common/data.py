@@ -17,13 +17,24 @@ class Data(object):
         self.clustering_alg_name = alg_name
         self.clustering_alg_params = alg_params
 
+    def __str__(self):
+        return "===DATA OBJECT===\n" + str(self._data) + "\n================="
+
     def set_data(self, new_data):
         self._data = new_data
 
     def get_dataframe(self):
-        return self._data
+        # this method is used by
+        # clustering and validation algorithms
+        # so it does not need name column
+        if self.has_names():
+            new_df = self._data.drop(self.NAMES_COLUMN_NAME, axis=1)
+            return new_df
+        else:
+            return self._data
 
     def _drop_labels(self):
+        # TODO: check this code. may contain mistakes
         if self.LABELS_COLUMN_NAME in self._data.columns:
             self._data.drop(self.LABELS_COLUMN_NAME)
 
@@ -45,8 +56,11 @@ class Data(object):
                 negative_labels_amount += 1
         return len(self.get_labels_list()) - negative_labels_amount
 
-    def cluster(self, label):
-        cluster = self._data.loc[label]
+    def cluster(self, label, with_names=False):
+        if with_names:
+            cluster = self._data.loc[label]
+        else:
+            cluster = self.get_dataframe().loc[label]
 
         if isinstance(cluster, pd.Series):
             cluster = pd.DataFrame([cluster])
@@ -61,11 +75,14 @@ class Data(object):
     def is_empty(self):
         return self._data.shape[0] == 0
 
+    def has_names(self):
+        return self.NAMES_COLUMN_NAME in self._data.columns
+
     def get_labels_list(self):
         return self.get_data_labels().unique()
 
     def get_coords_list(self):
-        return list(self._data)
+        return list(self.get_dataframe())
 
     def get_data_labels(self):
         return self._data.index
@@ -81,7 +98,8 @@ class Data(object):
 
     @property
     def dimension(self):
-        return self._data.shape[1]
+        # except names column
+        return self._data.shape[1] - 1
 
     def amount_of_elements_in_cluster(self, label):
         return self.cluster(label).shape[0]
@@ -172,8 +190,9 @@ class Data(object):
 
     def get_peak_sigma(self, label, peak_type):
         sigmas = []
-        for i in range(0, len(self._data.columns)):
-            sigmas.append(self.get_sigma(label, self._data.columns[i]))
+        coords = self.get_coords_list()
+        for i in range(0, len(coords)):
+            sigmas.append(self.get_sigma(label, coords[i]))
         return peak_type(sigmas)
 
     def get_distance_matrix(self):
@@ -187,6 +206,7 @@ class Data(object):
             return
 
         if has_headers:
+            # NOW IT IS ACTUALLY LOADING STORED DATA
 
             self._data = pd.read_csv(path)
 
@@ -197,13 +217,15 @@ class Data(object):
                 self._data = self._data.set_index(self.LABELS_COLUMN_NAME)
             if bad_header in headers:
                 self._data = self._data.loc[:, ~self._data.columns.str.contains('^Unnamed')]
+
         else:
+            # NOW IT IS ACTUALLY LOADING RAW DATA
             self._data = pd.read_csv(path, header=None)
             column_names = []
             for i in range(0, len(self._data.columns)):
                 column_names.append("x{}".format(i))
             self._data.columns = column_names
 
-
+            self._data[self.NAMES_COLUMN_NAME] = self._data.index.values
 
 

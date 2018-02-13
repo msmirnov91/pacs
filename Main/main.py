@@ -127,7 +127,6 @@ class PACS(QMainWindow):
                 data_2_copy = copy.deepcopy(self._data_2)
                 tab.update_tab(self._data_1, data_2_copy)
             else:
-
                 tab.update_tab(data_1_copy)
 
     def main(self):
