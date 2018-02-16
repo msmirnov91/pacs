@@ -10,6 +10,7 @@ class MatrixRep(MatplotlibWidget):
 
     def __init__(self, parent=None):
         super(MatrixRep, self).__init__(parent)
+        self.image_name = "matrix"
 
     def plot_matrix(self, matrix, x_labels, y_labels):
         """

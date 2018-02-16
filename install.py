@@ -1,12 +1,18 @@
 import os
+import sys
 
-from IO.storage_manager import StorageManager
+from Common.recorder import Recorder
+from IO import *
 from IO.models import create_db_table
 
-storage_dir = os.path.join(os.getcwd(), StorageManager.STORAGE_DIR)
-os.mkdir(storage_dir)
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-data_dirs = [StorageManager.RAW_FILES_DIR, StorageManager.RESULT_FILES_DIR]
+storage_dir = os.path.join(os.getcwd(), STORAGE_DIR)
+
+os.mkdir(storage_dir)
+os.mkdir(Recorder.REPORTS_DIR)
+
+data_dirs = [RAW_FILES_DIR, RESULT_FILES_DIR]
 
 for data_dir in data_dirs:
     os.mkdir(os.path.join(storage_dir, data_dir))

@@ -18,6 +18,7 @@ class PowerDistribution(MatplotlibWidget):
         self.explode = None
 
         super(PowerDistribution, self).__init__(parent)
+        self.image_name = "power_distr"
 
     def __calculate_sizes(self):
         # FIXME: cant add int to tuples

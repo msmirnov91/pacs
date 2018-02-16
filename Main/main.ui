@@ -90,8 +90,20 @@
      <height>25</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuSave">
+    <property name="title">
+     <string>Save</string>
+    </property>
+    <addaction name="actionSave_image_for_report"/>
+   </widget>
+   <addaction name="menuSave"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionSave_image_for_report">
+   <property name="text">
+    <string>Save image for report</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

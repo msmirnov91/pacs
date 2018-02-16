@@ -40,3 +40,9 @@ class PlotTab(AbstractVisualizationTab):
 
         self.change_visualization_widget_to(self.visualizer.get_cluster_plot(self._data, x, y))
 
+    def get_description_for_report(self):
+        description = "scatter plot of {} dataset on axis {}, {}".format(self._data.data_name,
+                                                                         self.x1.currentText(),
+                                                                         self.x2.currentText())
+        return description
+

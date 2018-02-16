@@ -52,3 +52,9 @@ class ComparisonTab(AbstractVisualizationTab):
         silhouette_2 = self.processor.get_silhouette(self._data_2)
         self.silhouette_value_1.setText(self.index_val_pattern.format(silhouette_1))
         self.silhouette_value_2.setText(self.index_val_pattern.format(silhouette_2))
+
+    def get_description_for_report(self):
+        description = "pie comparison diagram, {} cluster of {} dataset to {} dataset".format(self.pie_cluster.value(),
+                                                                                              self._data.data_name,
+                                                                                              self._data_2.data_name)
+        return description

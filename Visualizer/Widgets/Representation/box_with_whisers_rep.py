@@ -4,6 +4,7 @@ from Visualizer.Widgets.matplotlib_widget import MatplotlibWidget, plt
 class BoxWithWhiskers(MatplotlibWidget):
     def __init__(self, parent=None):
         super(BoxWithWhiskers, self).__init__(parent)
+        self.image_name = "bww"
 
     def plot_bww(self, data, widths):
         """

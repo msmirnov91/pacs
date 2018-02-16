@@ -53,3 +53,18 @@ class RepresentationTab(AbstractVisualizationTab):
             model.clear()
 
         self.elements_list.setModel(model)
+
+    def get_description_for_report(self):
+        if self.bww.isChecked():
+            widget_name = "box with whiskers"
+        elif self.dens_distribution.isChecked():
+            widget_name = "density distribution"
+        elif self.color_matrix.isChecked():
+            widget_name = "distance matrix"
+        elif self.validity_vector.isChecked():
+            widget_name = "validity vector"
+        else:
+            return "something very bad happens"
+
+        description = "{} of {} dataset".format(widget_name, self._data.data_name)
+        return description

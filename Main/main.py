@@ -1,23 +1,21 @@
 import copy
-import os
 
 from PyQt4 import uic
 from PyQt4.QtGui import *
-from PyQt4.QtCore import QSize
 
-from Processor.processor import Processor
+from Common.recorder import Recorder
 from Generator.generator_dialog import GeneratorDialog
 from IO.gui.load_widget import LoadWidget
 from IO.gui.save_widget import SaveWidget
-
 from IO.storage_manager import StorageManager
-# TODO: put them in one module
+from Main.tabs.abstract_visualization_tab import AbstractVisualizationTab
+from Main.tabs.Adviser.adviser_tab import AdviserTab
+from Main.tabs.Clustering.clustering_tab import ClusteringTab
+from Main.tabs.Comparison.comparison_tab import ComparisonTab
 from Main.tabs.Info.data_info_tab import DataInfoTab
 from Main.tabs.Plot.plot_tab import PlotTab
-from Main.tabs.Clustering.clustering_tab import ClusteringTab
-from Main.tabs.Adviser.adviser_tab import AdviserTab
-from Main.tabs.Comparison.comparison_tab import ComparisonTab
 from Main.tabs.Representation.representation_tab import RepresentationTab
+from Processor.processor import Processor
 
 
 class PACS(QMainWindow):
@@ -25,6 +23,8 @@ class PACS(QMainWindow):
         super(PACS, self).__init__(parent)
         uic.loadUi("Main/main.ui", self)
         self.setWindowIcon(QIcon("Main/icon.gif"))
+
+        self._recorder = Recorder()
 
         self.tabs = [
             DataInfoTab(),
@@ -53,6 +53,7 @@ class PACS(QMainWindow):
         self.btn_generate.clicked.connect(self.generate_data)
         self.btn_save.clicked.connect(self.save_result)
         self.btn_remove.clicked.connect(self.remove_data)
+        self.actionSave_image_for_report.triggered.connect(self.save_curr_plot_for_report)
 
         self.tabs[2].clusterize_data.connect(self.clusterize_data)
 
@@ -107,6 +108,10 @@ class PACS(QMainWindow):
         self._data_1.set_labels(labels)
         self._data_1.clustering_alg_name = alg
         self._data_1.clustering_alg_params = str(params)
+        record_msg = "Algorithm {} with parameters {} was applied to data {}"
+        self._recorder.add_record(record_msg.format(self._data_1.clustering_alg_name,
+                                                    self._data_1.clustering_alg_params,
+                                                    self._data_1.data_name))
         self.update_tabs()
 
     def update_data_list(self):
@@ -130,6 +135,16 @@ class PACS(QMainWindow):
                 tab.update_tab(self._data_1, data_2_copy)
             else:
                 tab.update_tab(data_1_copy)
+
+    def save_curr_plot_for_report(self):
+        current_widget_index = self.tab_main.currentIndex()
+        current_widget = self.tab_main.widget(current_widget_index)
+
+        if isinstance(current_widget, AbstractVisualizationTab):
+            report_dir = self._recorder.get_record_dir()
+            img_name = current_widget.add_image_to_report(report_dir)
+            report_description = current_widget.get_description_for_report()
+            self._recorder.add_record("Image of {} was saved. Image name: {}".format(report_description, img_name))
 
     def main(self):
         self.show()
