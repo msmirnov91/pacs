@@ -69,6 +69,16 @@ class Data(object):
     def remove_cluster(self, label):
         self._data = self._data.loc[~self._data.index.isin([label])]
 
+    def select_coordinates(self, coordinates):
+        if self.has_names():
+            coordinates.append(self.NAMES_COLUMN_NAME)
+        self._data = self._data[coordinates]
+
+    def select_elements(self, elements_list):
+        if not self.has_names():
+            return
+        self._data = self._data.loc[self._data[self.NAMES_COLUMN_NAME].isin(elements_list)]
+
     def is_clusterized(self):
         return self._data.index.name == self.LABELS_COLUMN_NAME
 

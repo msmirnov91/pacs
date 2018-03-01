@@ -1,5 +1,5 @@
 from PyQt4.QtCore import pyqtSignal
-from PyQt4.QtGui import QStandardItemModel, QStandardItem
+from PyQt4.QtGui import QStandardItemModel, QStandardItem, QAbstractItemView
 from Main.tabs.abstract_visualization_tab import AbstractVisualizationTab
 # TODO: put them all in one module
 from Main.tabs.Clustering.Settings.kmeans.kmeans_settings import KmeansSettings
@@ -19,6 +19,9 @@ class ClusteringTab(AbstractVisualizationTab):
 
         for name in self.processor.get_clustering_algorithm_names():
             self.cb_alg_name.addItem(name)
+
+        self.lv_coordinates.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        # TODO: add validator to le_element_numbers
 
         self.settings_widget_classes = [
             KmeansSettings,
@@ -72,8 +75,17 @@ class ClusteringTab(AbstractVisualizationTab):
         alg_name = self.cb_alg_name.currentText()
         return alg_name, self.settings_widget.get_settings()
 
-    def get_part_of_data(self):
-        pass
+    def use_all_data(self):
+        return self.cb_use_all.isChecked()
+
+    def get_choosed_coords(self):
+        coords_list = []
+        for index in self.lv_coordinates.selectedIndexes():
+            coords_list.append(str(index.data()))
+        return coords_list
+
+    def get_choosed_names(self):
+        return self.le_element_numbers.text()
 
     def emit_clusterize_signal(self):
         self.clusterize_data.emit()

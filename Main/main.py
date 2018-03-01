@@ -1,4 +1,5 @@
 import copy
+import re
 
 from PyQt4 import uic
 from PyQt4.QtGui import *
@@ -103,6 +104,10 @@ class PACS(QMainWindow):
         if self._data_1 is None:
             return
 
+        if not self.clustering_tab.use_all_data():
+            self._reduce_data(self.clustering_tab.get_choosed_coords(),
+                              self.clustering_tab.get_choosed_names())
+
         alg, params = self.clustering_tab.get_algorithm_and_settings()
         labels = Processor().get_cluster_labels(self._data_1, alg, params)
         self._data_1.set_labels(labels)
@@ -135,6 +140,31 @@ class PACS(QMainWindow):
                 tab.update_tab(self._data_1, data_2_copy)
             else:
                 tab.update_tab(data_1_copy)
+
+    def _reduce_data(self, coords, elements_descriptions):
+        if coords:
+            self._data_1.select_coordinates(coords)
+
+        if elements_descriptions:
+            elements = []
+
+            elements_descriptions = elements_descriptions.replace(" ", "")
+            elements_descriptions = elements_descriptions.split(",")
+            range_regexp = '\d\-\d'
+            digit_regexp = '\d'
+
+            for description in elements_descriptions:
+                if re.match(range_regexp, description):
+                    description = description.split("-")
+                    first_element = int(description[0])
+                    last_element = int(description[1])
+                    for i in range(first_element, last_element+1):
+                        elements.append(i)
+                elif re.match(digit_regexp, description):
+                    elements.append(int(description))
+
+            elements = list(set(elements))  # leave only unique elements
+            self._data_1.select_elements(elements)
 
     def save_curr_plot_for_report(self):
         current_widget_index = self.tab_main.currentIndex()

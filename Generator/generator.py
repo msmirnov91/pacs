@@ -11,7 +11,8 @@ class Generator(object):
     def generate(cls, settings):
         if settings == "":
             raise Exception("No settings received!")
-        cluster_descriptions = settings.split(' ')
+        settings = settings.replace(" ", "")
+        cluster_descriptions = settings.split(';')
         elements = pd.DataFrame()
         total_elements_amount = 0
 
