@@ -1,11 +1,14 @@
 from PyQt4.QtCore import pyqtSignal
-from Main.tabs.abstract_tab import AbstractTab
-# TODO: put them all in one file
+from PyQt4.QtGui import QStandardItemModel, QStandardItem
+from Main.tabs.abstract_visualization_tab import AbstractVisualizationTab
+# TODO: put them all in one module
 from Main.tabs.Clustering.Settings.kmeans.kmeans_settings import KmeansSettings
 from Main.tabs.Clustering.Settings.dbscan.dbscan_settings import DbscanSettings
 
 
-class ClusteringTab(AbstractTab):
+# maybe it is not good idea to make this tab an
+# instance of AbstractVisualizationTab
+class ClusteringTab(AbstractVisualizationTab):
     clusterize_data = pyqtSignal()
 
     def __init__(self, parent=None):
@@ -28,6 +31,24 @@ class ClusteringTab(AbstractTab):
         self.set_appropriate_settings_widget()
         self.cb_alg_name.currentIndexChanged.connect(self.set_appropriate_settings_widget)
         self.pb_submit.clicked.connect(self.emit_clusterize_signal)
+        self.cb_use_all.toggled.connect(self._enable_choose_data)
+
+        # lack_of_the_time
+        self.element_numbers = []
+
+    def update_tab(self, data):
+        # need this method to set the list of coordinates
+        # and possible numbers of elements
+        data_has_names = data.has_names()
+        self.le_element_numbers.setEnabled(data_has_names)  # disable if data hsd no names
+        if data_has_names:
+            self.element_numbers = data.get_element_names()
+
+        model = QStandardItemModel(self.lv_coordinates)
+        for coord in data.get_coords_list():
+            item = QStandardItem(str(coord))
+            model.appendRow(item)
+        self.lv_coordinates.setModel(model)
 
     def set_appropriate_settings_widget(self):
         alg_name = self.cb_alg_name.currentText()
@@ -41,9 +62,18 @@ class ClusteringTab(AbstractTab):
             self.settings_widget = settings_widget
             self._change_widget_on_layout_to(self.alg_params_layout, settings_widget)
 
+    def _enable_choose_data(self):
+        if self.cb_use_all.isChecked():
+            self.gb_choose_data.setEnabled(False)
+        else:
+            self.gb_choose_data.setEnabled(True)
+
     def get_algorithm_and_settings(self):
         alg_name = self.cb_alg_name.currentText()
         return alg_name, self.settings_widget.get_settings()
+
+    def get_part_of_data(self):
+        pass
 
     def emit_clusterize_signal(self):
         self.clusterize_data.emit()
