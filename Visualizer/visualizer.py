@@ -108,11 +108,21 @@ class Visualizer(object):
             labels = data.get_labels_list()
             colors = cm.rainbow(np.linspace(0, 1, len(labels) + 1))
             for label, color in zip(labels, colors):
+                # lack_of_the_time
                 cluster = data.cluster(label)
+                if x != y:
+                    cluster_y = cluster[y]
+                else:
+                    cluster_y = np.zeros(cluster[x].shape)
 
-                plot.plot_one_cluster(cluster[x], cluster[y], color, label)
+                plot.plot_one_cluster(cluster[x], cluster_y, color, label)
         else:
-            plot.plot_one_cluster(data.get_dataframe()[x], data.get_dataframe()[y], 'black', 'data')
+            # lack_of_the_time
+            if x != y:
+                data_y = data.get_dataframe()[y]
+            else:
+                data_y = np.zeros(data.get_dataframe()[x].shape)
+            plot.plot_one_cluster(data.get_dataframe()[x], data_y, 'black', 'data')
 
         return plot
 

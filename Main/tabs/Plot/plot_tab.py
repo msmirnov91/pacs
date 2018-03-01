@@ -14,9 +14,6 @@ class PlotTab(AbstractVisualizationTab):
     def _update_tab(self):
         coordinates = self._data.get_coords_list()
 
-        if len(coordinates) < 2:
-            return
-
         self.x1.clear()
         self.x2.clear()
         for coordinate in coordinates:
@@ -24,7 +21,10 @@ class PlotTab(AbstractVisualizationTab):
             self.x2.addItem(coordinate)
 
         self.x1.setCurrentIndex(0)
-        self.x2.setCurrentIndex(1)
+        if len(coordinates) == 1:
+            self.x2.setCurrentIndex(0)
+        else:
+            self.x2.setCurrentIndex(1)
 
         self.x1.currentIndexChanged.connect(self.show_selected_projection)
         self.x2.currentIndexChanged.connect(self.show_selected_projection)
@@ -35,7 +35,7 @@ class PlotTab(AbstractVisualizationTab):
         y = self.x2.currentText()
 
         # lack_of_the_time
-        if x == y or x == '' or y == '':
+        if x == '' or y == '':
             return
 
         self.change_visualization_widget_to(self.visualizer.get_cluster_plot(self._data, x, y))
