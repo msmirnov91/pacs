@@ -12,5 +12,5 @@ class ClusterPlot(MatplotlibWidget):
         plt.scatter(x, y, c=color, label=label)
 
     def _get_saved_images_amount(self):
-        self.saved_images += 1
+        ClusterPlot.saved_images += 1
         return self.saved_images

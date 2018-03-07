@@ -35,5 +35,5 @@ class Bar(MatplotlibWidget):
             y_offset = y_offset + bar_representation[i]
 
     def _get_saved_images_amount(self):
-        self.saved_images += 1
+        Bar.saved_images += 1
         return self.saved_images

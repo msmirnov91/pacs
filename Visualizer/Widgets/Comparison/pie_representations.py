@@ -57,7 +57,7 @@ class PieDiagramm(MatplotlibWidget):
                     shadow=True, startangle=90)
 
     def _get_saved_images_amount(self):
-        self.saved_images += 1
+        PieDiagramm.saved_images += 1
         return self.saved_images
 
 

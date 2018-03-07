@@ -46,6 +46,7 @@ class MatplotlibWidget(QWidget):
         self.figure.savefig(os.path.join(report_dir, fig_name))
 
     def get_image_name(self):
+        # looks like this is a bad implementation...
         return "{}{}.png".format(self.image_name, self._get_saved_images_amount())
 
     def _get_saved_images_amount(self):

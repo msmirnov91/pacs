@@ -31,5 +31,5 @@ class BoxWithWhiskers(MatplotlibWidget):
         #         xticklabels=['x1', 'x2', 'x3', 'x4'])
 
     def _get_saved_images_amount(self):
-        self.saved_images += 1
+        BoxWithWhiskers.saved_images += 1
         return self.saved_images

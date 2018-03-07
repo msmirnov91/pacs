@@ -43,5 +43,5 @@ class MatrixRep(MatplotlibWidget):
         self.figure.colorbar(matrix_plot)
 
     def _get_saved_images_amount(self):
-        self.saved_images += 1
+        MatrixRep.saved_images += 1
         return self.saved_images
