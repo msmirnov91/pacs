@@ -4,19 +4,19 @@ import re
 from PyQt4 import uic
 from PyQt4.QtGui import *
 
-from Common.recorder import Recorder
 from Generator.generator_dialog import GeneratorDialog
 from IO.gui.load_widget import LoadWidget
 from IO.gui.save_widget import SaveWidget
 from IO.storage_manager import StorageManager
-from Main.tabs.abstract_visualization_tab import AbstractVisualizationTab
 from Main.tabs.Adviser.adviser_tab import AdviserTab
 from Main.tabs.Clustering.clustering_tab import ClusteringTab
 from Main.tabs.Comparison.comparison_tab import ComparisonTab
 from Main.tabs.Info.data_info_tab import DataInfoTab
 from Main.tabs.Plot.plot_tab import PlotTab
 from Main.tabs.Representation.representation_tab import RepresentationTab
+from Main.tabs.abstract_visualization_tab import AbstractVisualizationTab
 from Processor.processor import Processor
+from Recorder.recorder import Recorder
 
 
 class PACS(QMainWindow):
@@ -77,11 +77,24 @@ class PACS(QMainWindow):
         else:
             return
 
+        record_msg = "Selected data:\n\t{}\n".format(self._data_1.data_name)
+        if self._data_2:
+            log_2_data = "\t{}\n".format(self._data_2.data_name)
+            record_msg += log_2_data
+        self._recorder.add_record(record_msg)
+
         self.update_tabs()
 
     def generate_data(self):
         generate_dialog = GeneratorDialog()
-        generate_dialog.exec_()
+        result = generate_dialog.exec_()
+
+        if result:
+            record_msg = "Generated data:\n\tname: {}\n\tdescription: {}\n"
+            record_msg = record_msg.format(generate_dialog.get_data_name(),
+                                           generate_dialog.get_description())
+            self._recorder.add_record(record_msg)
+
         self.update_data_list()
 
     def save_result(self):
@@ -89,7 +102,12 @@ class PACS(QMainWindow):
             return
 
         save_widget = SaveWidget(self._data_1)
-        save_widget.exec_()
+        result = save_widget.exec_()
+
+        if result:
+            record_msg = "Saved data:\n\t{}\n".format(self._data_1.data_name)
+            self._recorder.add_record(record_msg)
+
         self.update_data_list()
 
     def remove_data(self):
@@ -113,10 +131,20 @@ class PACS(QMainWindow):
         self._data_1.set_labels(labels)
         self._data_1.clustering_alg_name = alg
         self._data_1.clustering_alg_params = str(params)
-        record_msg = "Algorithm {} with parameters {} was applied to data {}"
-        self._recorder.add_record(record_msg.format(self._data_1.clustering_alg_name,
-                                                    self._data_1.clustering_alg_params,
-                                                    self._data_1.data_name))
+
+        # lack_of_the_time
+        record_msg = """Clustered data:
+        \tdata: {}
+        \tcoordinates: {}
+        \telements: {}
+        \talgorithm: {}
+        \tparameters: {}\n"""
+
+        self._recorder.add_record(record_msg.format(self._data_1.data_name,
+                                                    self._data_1.get_coords_list(),
+                                                    self._data_1.get_elements_names_string(),
+                                                    self._data_1.clustering_alg_name,
+                                                    self._data_1.clustering_alg_params))
         self.update_tabs()
 
     def update_data_list(self):
@@ -174,7 +202,7 @@ class PACS(QMainWindow):
             report_dir = self._recorder.get_record_dir()
             img_name = current_widget.add_image_to_report(report_dir)
             report_description = current_widget.get_description_for_report()
-            self._recorder.add_record("Image of {} was saved. Image name: {}".format(report_description, img_name))
+            self._recorder.add_record("Was saved {}.\n\tname: {}\n".format(report_description, img_name))
 
     def main(self):
         self.show()

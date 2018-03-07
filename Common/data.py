@@ -94,6 +94,41 @@ class Data(object):
     def get_coords_list(self):
         return list(self.get_dataframe())
 
+    def get_elements_names_string(self):
+        if not self.has_names():
+            return "No element numbers set for this data"
+
+        element_names = sorted(list(self.get_element_names()))
+        result = ""
+
+        def get_last_range_index(array, first_element_index):
+            i = first_element_index
+            length = len(array)
+
+            while i < length - 1:
+                if array[i+1] - array[i] == 1:
+                    # next element is next in range
+                    i += 1
+                else:
+                    break
+
+            return i
+
+        i = 0
+        while i < len(element_names) - 1:
+            if element_names[i+1] - element_names[i] == 1:
+                # we have range here
+                last_index = get_last_range_index(element_names, i)
+                range_str = "{}-{}, ".format(element_names[i], element_names[last_index])
+                i = last_index
+                result += range_str
+            else:
+                # we have single element
+                i += 1
+                result += str(element_names[i])
+
+        return result
+
     def get_data_labels(self):
         return self._data.index
 

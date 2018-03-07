@@ -1,9 +1,9 @@
 import os
 import sys
 
-from Common.recorder import Recorder
 from IO import *
 from IO.models import create_db_table
+from Recorder.recorder import Recorder
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 

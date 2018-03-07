@@ -21,7 +21,7 @@ class MatplotlibWidget(QWidget):
         self.ax = self.figure.add_subplot(1, 1, 1)
 
         self.image_name = None
-        self.saved_images = 0
+        # self.saved_images = 0
 
         # self.redraw()
 
@@ -44,10 +44,12 @@ class MatplotlibWidget(QWidget):
 
     def save_image(self, report_dir, fig_name):
         self.figure.savefig(os.path.join(report_dir, fig_name))
-        self.saved_images += 1
 
     def get_image_name(self):
-        return "{}{}.png".format(self.image_name, self.saved_images)
+        return "{}{}.png".format(self.image_name, self._get_saved_images_amount())
+
+    def _get_saved_images_amount(self):
+        raise NotImplementedError
 
 
 if __name__ == '__main__':

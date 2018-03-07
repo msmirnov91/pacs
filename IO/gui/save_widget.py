@@ -20,7 +20,7 @@ class SaveWidget(QDialog):
         name = self.info_tab.le_name.text()
         if name is None or name == "":
             self.close()
-            return self.Rejected
+            return
 
         self._data.data_name = name
         self._data.clustering_alg_name = self.info_tab.le_alg.text()
@@ -28,4 +28,5 @@ class SaveWidget(QDialog):
         self._data.user_comment = self.info_tab.le_comment.text()
 
         StorageManager().store(self._data)
+        super(SaveWidget, self).accept()
         self.close()

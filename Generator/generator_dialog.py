@@ -13,14 +13,24 @@ class GeneratorDialog(QDialog):
         self.plot_tab = PlotTab()
         self._data = None
 
+        self._description = None
+
         self.plot_layout.addWidget(self.plot_tab)
         self.btn_generate.clicked.connect(self.generate)
 
     def generate(self):
-        description = self.le_description.text()
-        self._data = Generator().generate(description)
+        self._description = self.le_description.text()
+        self._data = Generator().generate(self._description)
         self.plot_tab.update_tab(self._data)
 
     def accept(self):
         save_widget = SaveWidget(self._data)
-        return save_widget.exec_()
+        if save_widget.exec_():
+            super(GeneratorDialog, self).accept()
+        return
+
+    def get_data_name(self):
+        return self._data.data_name
+
+    def get_description(self):
+        return self._description

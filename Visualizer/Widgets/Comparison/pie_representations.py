@@ -4,6 +4,8 @@ import sys
 
 
 class PieDiagramm(MatplotlibWidget):
+    saved_images = 0
+
     def __init__(self, parent=None):
         super(PieDiagramm, self).__init__(parent)
         self.image_name = "pie"
@@ -53,6 +55,10 @@ class PieDiagramm(MatplotlibWidget):
 
         self.ax.pie(sizes, labels=labels, autopct='%1.1f%%',
                     shadow=True, startangle=90)
+
+    def _get_saved_images_amount(self):
+        self.saved_images += 1
+        return self.saved_images
 
 
 if __name__ == '__main__':
