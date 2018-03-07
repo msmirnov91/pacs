@@ -3,7 +3,6 @@ from Visualizer.Widgets.matplotlib_widget import MatplotlibWidget
 
 
 class MatrixRep(MatplotlibWidget):
-    saved_images = 0
     # need this for make cluster labels on the plot readable
     # one label corresponds to element [-1; -1]
     MAX_X_LABELS = 21
@@ -42,6 +41,3 @@ class MatrixRep(MatplotlibWidget):
 
         self.figure.colorbar(matrix_plot)
 
-    def _get_saved_images_amount(self):
-        MatrixRep.saved_images += 1
-        return self.saved_images

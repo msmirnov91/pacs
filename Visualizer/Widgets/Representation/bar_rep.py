@@ -3,8 +3,6 @@ import numpy as np
 
 
 class Bar(MatplotlibWidget):
-    saved_images = 0
-
     def __init__(self, parent=None):
         super(Bar, self).__init__(parent)
         self.image_name = "bar"
@@ -34,6 +32,3 @@ class Bar(MatplotlibWidget):
             plt.bar(ind, bar_representation[i], width, bottom=y_offset, color=colors[i])
             y_offset = y_offset + bar_representation[i]
 
-    def _get_saved_images_amount(self):
-        Bar.saved_images += 1
-        return self.saved_images

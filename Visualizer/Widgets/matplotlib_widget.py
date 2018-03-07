@@ -7,6 +7,8 @@ from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 
 
 class MatplotlibWidget(QWidget):
+    saved_images = 0
+
     def __init__(self, parent=None):
         super(MatplotlibWidget, self).__init__(parent)
         self.ax = None
@@ -46,11 +48,11 @@ class MatplotlibWidget(QWidget):
         self.figure.savefig(os.path.join(report_dir, fig_name))
 
     def get_image_name(self):
-        # looks like this is a bad implementation...
         return "{}{}.png".format(self.image_name, self._get_saved_images_amount())
 
     def _get_saved_images_amount(self):
-        raise NotImplementedError
+        type(self).saved_images += 1
+        return self.saved_images
 
 
 if __name__ == '__main__':

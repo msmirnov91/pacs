@@ -2,8 +2,6 @@ from Visualizer.Widgets.matplotlib_widget import MatplotlibWidget, plt
 
 
 class BoxWithWhiskers(MatplotlibWidget):
-    saved_images = 0
-
     def __init__(self, parent=None):
         super(BoxWithWhiskers, self).__init__(parent)
         self.image_name = "bww"
@@ -30,6 +28,3 @@ class BoxWithWhiskers(MatplotlibWidget):
         # plt.setp(axes, xticks=[y + 1 for y in range(len(all_data))],
         #         xticklabels=['x1', 'x2', 'x3', 'x4'])
 
-    def _get_saved_images_amount(self):
-        BoxWithWhiskers.saved_images += 1
-        return self.saved_images
