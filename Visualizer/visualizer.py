@@ -13,6 +13,16 @@ from Visualizer.Widgets.Comparison.pie_representations import PieDiagramm
 # TODO: make decorators!
 class Visualizer(object):
     @classmethod
+    def add_standard_title(cls, widget, data, additional_info=None):
+        title = "data: '{}', coordinates: {}, elements: {}".format(data.data_name,
+                                                                   data.get_coords_list(),
+                                                                   data.get_elements_names_string())
+        if additional_info:
+            title += " "
+            title += additional_info
+        widget.set_title(title)
+
+    @classmethod
     def get_bww(cls, data):
         if not data.is_clusterized():
             return BoxWithWhiskers()
@@ -41,6 +51,7 @@ class Visualizer(object):
             representation.append(cluster_rep)
 
         bww = BoxWithWhiskers()
+        Visualizer.add_standard_title(bww, data)
         bww.plot_bww(representation, widths)
         return bww
 
@@ -64,6 +75,7 @@ class Visualizer(object):
             bar_rep.append(row)
 
         dense_distribution = Bar()
+        Visualizer.add_standard_title(dense_distribution, data)
         dense_distribution.make_bars(np.asarray(bar_rep))
         return dense_distribution
 
@@ -78,6 +90,7 @@ class Visualizer(object):
 
         x_labels = y_labels = data.get_data_labels().tolist()
 
+        Visualizer.add_standard_title(matrix, data)
         matrix.plot_matrix(data.get_distance_matrix(), x_labels, y_labels)
         return matrix
 
@@ -124,22 +137,26 @@ class Visualizer(object):
                 data_y = np.zeros(data.get_dataframe()[x].shape)
             plot.plot_one_cluster(data.get_dataframe()[x], data_y, 'black', 'data')
 
+        additional_info = "X: {}, Y: {}".format(x, y)
+        Visualizer.add_standard_title(plot, data, additional_info)
         return plot
 
     @classmethod
-    def get_pie(cls, cluster, data):
-        if not data.is_clusterized():
+    def get_pie(cls, data1, data2, cluster_label):
+        if not data2.is_clusterized() or not data1.is_clusterized():
             return PieDiagramm()
+
+        cluster = data1.cluster(cluster_label)
 
         amounts = []
         unmatched = 0
 
         # lack_of_the_time
-        for i in data.get_labels_list():
+        for i in data2.get_labels_list():
             amounts.append(0)
 
         for _, element in cluster.iterrows():
-            label = data.get_label_of_element(element)
+            label = data2.get_label_of_element(element)
 
             if label is None:
                 unmatched += 1
@@ -147,6 +164,10 @@ class Visualizer(object):
                 amounts[label] += 1
 
         pie = PieDiagramm()
+        title = "Data1: {}, Data2: {}, cluster: {}".format(data1.data_name,
+                                                           data2.data_name,
+                                                           cluster_label)
+        pie.set_title(title)
         pie.plot_pie(amounts, unmatched)
         return pie
 
