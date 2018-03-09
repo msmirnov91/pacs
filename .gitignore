@@ -96,7 +96,7 @@ ENV/
 # Files to store data
 Storage
 # Report files
-Reports
+Sessions
 
 # DB files
 *.db

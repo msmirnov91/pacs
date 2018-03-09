@@ -8,6 +8,7 @@ from Generator.generator_dialog import GeneratorDialog
 from IO.gui.load_widget import LoadWidget
 from IO.gui.save_widget import SaveWidget
 from IO.storage_manager import StorageManager
+from Main import *
 from Main.tabs.Adviser.adviser_tab import AdviserTab
 from Main.tabs.Clustering.clustering_tab import ClusteringTab
 from Main.tabs.Comparison.comparison_tab import ComparisonTab
@@ -17,6 +18,7 @@ from Main.tabs.Representation.representation_tab import RepresentationTab
 from Main.tabs.abstract_visualization_tab import AbstractVisualizationTab
 from Processor.processor import Processor
 from Recorder.recorder import Recorder
+from Main.StartDialog.start_dialog import StartDialog
 
 
 class PACS(QMainWindow):
@@ -25,7 +27,7 @@ class PACS(QMainWindow):
         uic.loadUi("Main/main.ui", self)
         self.setWindowIcon(QIcon("Main/icon.gif"))
 
-        self._recorder = Recorder()
+        self._recorder = None
 
         self.tabs = [
             DataInfoTab(),
@@ -205,4 +207,11 @@ class PACS(QMainWindow):
             self._recorder.add_record("Was saved {}.\n\tname: {}\n".format(report_description, img_name))
 
     def main(self):
-        self.show()
+        start_dialog = StartDialog(SESSION_DIR)
+        result = start_dialog.exec_()
+        if result:
+            self._recorder = Recorder(start_dialog.get_recorder_dir())
+            start_dialog.deleteLater()
+            self.show()
+        else:
+            return
