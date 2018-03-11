@@ -226,6 +226,7 @@ class PACS(QMainWindow):
             self._recorder = Recorder(start_dialog.get_recorder_dir())
             self._storage_manager = StorageManager(start_dialog.get_session_name())
             self.update_data_list()
+            self.setWindowTitle("PACS - {}".format(start_dialog.get_session_name()))
             start_dialog.deleteLater()
             self.show()
         else:

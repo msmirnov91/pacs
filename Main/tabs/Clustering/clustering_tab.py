@@ -53,6 +53,11 @@ class ClusteringTab(AbstractVisualizationTab):
             model.appendRow(item)
         self.lv_coordinates.setModel(model)
 
+        if data is None:
+            self.pb_submit.setEnabled(False)
+        else:
+            self.pb_submit.setEnabled(True)
+
     def set_appropriate_settings_widget(self):
         alg_name = self.cb_alg_name.currentText()
 

@@ -125,7 +125,11 @@ class Data(object):
             else:
                 # we have single element
                 i += 1
-                result += str(element_names[i])
+                result += "{}, ".format(element_names[i])
+
+        # lack_of_the_time
+        if result.endswith(", "):
+            result = result[:-2]
 
         return result
 

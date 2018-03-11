@@ -7,6 +7,7 @@ from Visualizer.Widgets.Plot.cluster_plot import ClusterPlot
 from Visualizer.Widgets.Representation.box_with_whisers_rep import BoxWithWhiskers
 from Visualizer.Widgets.Representation.bar_rep import Bar
 from Visualizer.Widgets.Representation.matrix_rep import MatrixRep
+from Visualizer.Widgets.Representation.vector_rep import VectorRep
 from Visualizer.Widgets.Comparison.pie_representations import PieDiagramm
 
 
@@ -96,19 +97,19 @@ class Visualizer(object):
 
     @classmethod
     def get_validity_vector(cls, data):
-        vector = MatrixRep()
-        vector.set_image_name("vector")
+        vector = VectorRep()
 
         if not data.is_clusterized():
             return vector
 
         matrix = []
-        for i in range(0, data.clusters_amount()):
-            matrix.append(Processor().get_db_for_cluster(data, i))
+        for label in data.get_labels_list():
+            matrix.append(Processor().get_db_for_cluster(data, label))
 
         x_labels = data.get_labels_list().tolist()
         y_labels = []
 
+        Visualizer.add_standard_title(vector, data)
         vector.plot_matrix([matrix], x_labels, y_labels)
         return vector
 

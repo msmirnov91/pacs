@@ -5,8 +5,8 @@ from sklearn.metrics import adjusted_mutual_info_score
 from Processor.Clustering.kmeans import AlgKMEANS
 from Processor.Clustering.dbscan import AlgDBSCAN
 
-from Processor.Validity.Davies_Bouldin_Index_KMeans.index import compute_DB_index, compute_R
-from Processor.Validity.Dunn.dunn_sklearn import dunn
+from Processor.Validity.dunn import calculate_dunn
+from Processor.Validity.davies_bolduin import calculate_davies_bouldin, calc_davies_bouldin_for_cluster
 
 
 # TODO: make decorators!
@@ -37,35 +37,31 @@ class Processor(object):
     @classmethod
     def get_dunn(cls, data):
         if not data.is_clusterized():
-            return 0
-
-        # lack_of_the_time
-        new_data = data
-
-        for label in data.get_labels_list():
-            if label < 0:
-                new_data.remove_cluster(label)
-
-        return dunn(new_data.get_data_labels(), new_data.get_distance_matrix())
+            return -1
+        return calculate_dunn(data)
 
     @classmethod
     def get_db(cls, data):
         if not data.is_clusterized():
-            return 0
+            return -1
 
+        """
         n_clusters = data.clusters_amount()
         centers = data.get_cluster_centers()
         labels = data.get_data_labels()
-        return compute_DB_index(data, labels, centers, n_clusters)
+        """
+        return calculate_davies_bouldin(data)
 
     @classmethod
     def get_db_for_cluster(cls, data, cluster_number):
         if not data.is_clusterized():
-            return 0
+            return -1
+        """
         n_clusters = data.clusters_amount()
         centers = data.get_cluster_centers()
         labels = data.get_data_labels()
-        return compute_R(cluster_number, data, labels, centers, n_clusters)
+        """
+        return calc_davies_bouldin_for_cluster(data, cluster_number)
 
     @classmethod
     def get_silhouette(cls, data):
