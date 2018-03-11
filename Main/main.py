@@ -67,6 +67,8 @@ class PACS(QMainWindow):
             file_path, data_name, comment = load_widget.get_new_data_info()
             self._storage_manager.load(path=file_path, name=data_name, comment=comment)
             self.update_data_list()
+            record_msg = "Loaded data:\n\tnew data name: {}\n\tpath: {}\n".format(data_name, file_path)
+            self._recorder.add_record(record_msg)
         load_widget.deleteLater()
 
     def select_data(self):
