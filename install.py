@@ -1,20 +1,41 @@
 import os
 import sys
+import time
 
 from IO import *
 from IO.models import create_db_table
 from Recorder.recorder import Recorder
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-storage_dir = os.path.join(os.getcwd(), STORAGE_DIR)
+def print_slowly(message, delay):
+    for letter in message:
+        print(letter, end="")
+        sys.stdout.flush()
+        time.sleep(delay)
+    print()
 
-os.mkdir(storage_dir)
-os.mkdir(Recorder.REPORTS_DIR)
 
-data_dirs = [RAW_FILES_DIR, RESULT_FILES_DIR]
+def print_success_report():
+    print("PACS installed successfully!")
+    time.sleep(1)
+    print_slowly("...at least i hope so.", 0.2)
+    time.sleep(1)
+    print_slowly("Good luck.", 0.35)
 
-for data_dir in data_dirs:
-    os.mkdir(os.path.join(storage_dir, data_dir))
+
+try:
+    import PyQt4
+    import matplotlib
+    import numpy
+    import peewee
+except ImportError as error:
+    print(error)
+    print("Install needed module and try again")
+    exit()
+
+# sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 create_db_table()
+
+print_success_report()
+

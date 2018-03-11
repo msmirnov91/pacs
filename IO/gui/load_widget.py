@@ -1,9 +1,6 @@
-import os
-
 from PyQt4 import uic
 from PyQt4.QtGui import QDialog, QFileDialog
 
-from IO.storage_manager import StorageManager
 from IO import *
 
 
@@ -16,17 +13,15 @@ class LoadWidget(QDialog):
 
     def choose(self):
         dialog = QFileDialog()
-        raw_files_dir = os.path.join(STORAGE_DIR, RAW_FILES_DIR)
-        file_name = dialog.getOpenFileName(self, 'Open file with data', raw_files_dir)
+        file_name = dialog.getOpenFileName(self, 'Open file with data', RAW_FILES_DIR)
         self.le_path.setText(file_name)
+
+    def get_new_data_info(self):
+        return self.le_path.text(), self.le_name.text(), self.le_comment.text()
 
     def accept(self):
         name = self.le_name.text()
         if name is None or name == "":
-            self.close()
-            return self.Rejected
+            super(LoadWidget, self).reject()
 
-        path = self.le_path.text()
-        comment = self.le_comment.text()
-        StorageManager().load(path=path, name=name, comment=comment)
-        self.close()
+        super(LoadWidget, self).accept()

@@ -23,11 +23,16 @@ class GeneratorDialog(QDialog):
         self._data = Generator().generate(self._description)
         self.plot_tab.update_tab(self._data)
 
+    @property
+    def data(self):
+        return self._data
+    """
     def accept(self):
         save_widget = SaveWidget(self._data)
         if save_widget.exec_():
             super(GeneratorDialog, self).accept()
         return
+    """
 
     def get_data_name(self):
         return self._data.data_name

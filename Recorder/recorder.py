@@ -20,7 +20,7 @@ class Recorder(object):
         if not os.path.exists(file_name):
             # lack_of_the_time
             session_name = self.get_record_dir().split('/')[1]
-            record_msg = "----SESSION '{}'----\n\n".format(session_name)
+            record_msg = "======SESSION '{}'======\n\n".format(session_name)
 
         record_msg += "----{}----\n\n".format(str(now))
 

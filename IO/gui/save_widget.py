@@ -16,6 +16,10 @@ class SaveWidget(QDialog):
         self.info_tab.enable_fields()
         self.info_tab.update_tab(self._data)
 
+    def get_name_and_comment(self):
+        return self.info_tab.le_name.text(), self.info_tab.le_comment.text()
+
+    """
     def accept(self):
         name = self.info_tab.le_name.text()
         if name is None or name == "":
@@ -30,3 +34,4 @@ class SaveWidget(QDialog):
         StorageManager().store(self._data)
         super(SaveWidget, self).accept()
         self.close()
+    """

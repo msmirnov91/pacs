@@ -28,6 +28,7 @@ class PACS(QMainWindow):
         self.setWindowIcon(QIcon("Main/icon.gif"))
 
         self._recorder = None
+        self._storage_manager = None
 
         self.tabs = [
             DataInfoTab(),
@@ -48,7 +49,6 @@ class PACS(QMainWindow):
 
         self.list_data.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.connect_signals_and_slots()
-        self.update_data_list()
 
     def connect_signals_and_slots(self):
         self.btn_select.clicked.connect(self.select_data)
@@ -62,20 +62,23 @@ class PACS(QMainWindow):
 
     def load_new_data(self):
         load_widget = LoadWidget()
-        load_widget.exec_()
-        # lack_of_the_time
-        self.update_data_list()
+        result = load_widget.exec_()
+        if result:
+            file_path, data_name, comment = load_widget.get_new_data_info()
+            self._storage_manager.load(path=file_path, name=data_name, comment=comment)
+            self.update_data_list()
+        load_widget.deleteLater()
 
     def select_data(self):
         selected_items = self.list_data.selectedIndexes()
         items_amount = len(selected_items)
 
         if items_amount == 1:
-            self._data_1 = StorageManager().get_loaded(selected_items[0].data())
+            self._data_1 = self._storage_manager.get_loaded(selected_items[0].data())
             self._data_2 = None
         elif items_amount == 2:
-            self._data_1 = StorageManager().get_loaded(selected_items[0].data())
-            self._data_2 = StorageManager().get_loaded(selected_items[1].data())
+            self._data_1 = self._storage_manager.get_loaded(selected_items[0].data())
+            self._data_2 = self._storage_manager.get_loaded(selected_items[1].data())
         else:
             return
 
@@ -96,6 +99,8 @@ class PACS(QMainWindow):
             record_msg = record_msg.format(generate_dialog.get_data_name(),
                                            generate_dialog.get_description())
             self._recorder.add_record(record_msg)
+            self._data_1 = generate_dialog.data
+            self.save_result()
 
         self.update_data_list()
 
@@ -105,18 +110,23 @@ class PACS(QMainWindow):
 
         save_widget = SaveWidget(self._data_1)
         result = save_widget.exec_()
+        name, comment = save_widget.get_name_and_comment()
 
-        if result:
+        if result and name:
+            self._data_1.data_name = name
+            self._data_1.user_comment = comment
+            self._storage_manager.store(self._data_1)
+
             record_msg = "Saved data:\n\t{}\n".format(self._data_1.data_name)
             self._recorder.add_record(record_msg)
 
+        save_widget.deleteLater()
         self.update_data_list()
 
     def remove_data(self):
-        storage_manager = StorageManager()
         selected_items = self.list_data.selectedIndexes()
         for item in selected_items:
-            storage_manager.remove_loaded(item.data())
+            self._storage_manager.remove_loaded(item.data())
 
         self.update_data_list()
 
@@ -151,7 +161,7 @@ class PACS(QMainWindow):
 
     def update_data_list(self):
         data_list_model = QStandardItemModel(self.list_data)
-        names = StorageManager().get_all_names()
+        names = self._storage_manager.get_all_names()
         for name in names:
             item = QStandardItem(name)
             data_list_model.appendRow(item)
@@ -211,7 +221,9 @@ class PACS(QMainWindow):
         result = start_dialog.exec_()
         if result:
             self._recorder = Recorder(start_dialog.get_recorder_dir())
+            self._storage_manager = StorageManager(start_dialog.get_session_name())
+            self.update_data_list()
             start_dialog.deleteLater()
             self.show()
         else:
-            return
+            exit()

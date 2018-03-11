@@ -1,4 +1,5 @@
 import os
+import datetime
 
 from PyQt4 import uic
 from PyQt4.QtGui import QDialog, QStandardItemModel, QStandardItem
@@ -35,7 +36,11 @@ class StartDialog(QDialog):
 
     def get_session_name(self):
         if self.new_session_rb.isChecked():
-            return self.new_session_name_le.text()
+            name = self.new_session_name_le.text()
+            if not name:
+                # lack_of_the_time
+                name = datetime.datetime.now().strftime("%Y.%m.%d-%H:%M")
+            return name
         elif self.old_session_rb.isChecked():
             selected_items = self.existing_sessions_list.selectedIndexes()
             if selected_items:
