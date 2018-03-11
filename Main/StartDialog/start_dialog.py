@@ -57,6 +57,6 @@ class StartDialog(QDialog):
         name = self.get_session_name()
         if re.match(pattern, name):
             super(StartDialog, self).accept()
-            return 
+            return
 
         super(StartDialog, self).reject()

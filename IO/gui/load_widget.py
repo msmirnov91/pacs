@@ -26,5 +26,6 @@ class LoadWidget(QDialog):
         name = self.le_name.text()
         if re.match(pattern, name):
             super(LoadWidget, self).accept()
+            return
 
         super(LoadWidget, self).reject()
