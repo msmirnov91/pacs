@@ -33,8 +33,6 @@ except ImportError as error:
     print("Install needed module and try again")
     exit()
 
-# sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
 create_db_table()
 
 print_success_report()

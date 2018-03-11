@@ -26,6 +26,8 @@ class PACS(QMainWindow):
         super(PACS, self).__init__(parent)
         uic.loadUi("Main/main.ui", self)
         self.setWindowIcon(QIcon("Main/icon.gif"))
+        self._title = "PACS"
+        self._title_delimiter = "/"
 
         self._recorder = None
         self._storage_manager = None
@@ -90,6 +92,11 @@ class PACS(QMainWindow):
             record_msg += log_2_data
         self._recorder.add_record(record_msg)
 
+        title_parts = self.windowTitle().split(self._title_delimiter)
+        title = "{}{}{}{}{}".format(self._title, self._title_delimiter,
+                                    title_parts[1], self._title_delimiter,
+                                    self._data_1.data_name)
+        self.setWindowTitle(title)
         self.update_tabs()
 
     def generate_data(self):
@@ -226,7 +233,9 @@ class PACS(QMainWindow):
             self._recorder = Recorder(start_dialog.get_recorder_dir())
             self._storage_manager = StorageManager(start_dialog.get_session_name())
             self.update_data_list()
-            self.setWindowTitle("PACS - {}".format(start_dialog.get_session_name()))
+            self.setWindowTitle("{}{}{}".format(self._title,
+                                                self._title_delimiter,
+                                                start_dialog.get_session_name()))
             start_dialog.deleteLater()
             self.show()
         else:
