@@ -247,7 +247,7 @@ class Data(object):
         return peak_type(sigmas)
 
     def get_distance_matrix(self):
-        return squareform(pdist(self._data))
+        return squareform(pdist(self.get_dataframe()))
 
     def save_to_file(self, file_path):
         self._data.to_csv(file_path)
