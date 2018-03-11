@@ -1,5 +1,6 @@
 import os
 import datetime
+import re
 
 from PyQt4 import uic
 from PyQt4.QtGui import QDialog, QStandardItemModel, QStandardItem
@@ -50,3 +51,12 @@ class StartDialog(QDialog):
 
     def get_recorder_dir(self):
         return os.path.join(self.session_dir, self.get_session_name(), "Report")
+
+    def accept(self):
+        pattern = '[0-9a-zA-Z_:\\.\\-]+$'
+        name = self.get_session_name()
+        if re.match(pattern, name):
+            super(StartDialog, self).accept()
+            return 
+
+        super(StartDialog, self).reject()

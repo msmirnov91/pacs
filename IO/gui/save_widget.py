@@ -1,3 +1,5 @@
+import re
+
 from PyQt4 import uic
 from PyQt4.QtGui import QDialog
 
@@ -19,19 +21,12 @@ class SaveWidget(QDialog):
     def get_name_and_comment(self):
         return self.info_tab.le_name.text(), self.info_tab.le_comment.text()
 
-    """
     def accept(self):
+        pattern = '[0-9a-zA-Z_:\\.\\-]+$'
         name = self.info_tab.le_name.text()
-        if name is None or name == "":
-            self.close()
+
+        if re.match(pattern, name):
+            print("match")
+            super(SaveWidget, self).accept()
             return
-
-        self._data.data_name = name
-        self._data.clustering_alg_name = self.info_tab.le_alg.text()
-        self._data.clustering_alg_params = self.info_tab.le_alg_param.text()
-        self._data.user_comment = self.info_tab.le_comment.text()
-
-        StorageManager().store(self._data)
-        super(SaveWidget, self).accept()
-        self.close()
-    """
+        super(SaveWidget, self).reject()

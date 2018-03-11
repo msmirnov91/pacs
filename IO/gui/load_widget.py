@@ -1,3 +1,5 @@
+import re
+
 from PyQt4 import uic
 from PyQt4.QtGui import QDialog, QFileDialog
 
@@ -20,8 +22,9 @@ class LoadWidget(QDialog):
         return self.le_path.text(), self.le_name.text(), self.le_comment.text()
 
     def accept(self):
+        pattern = '[0-9a-zA-Z_:\\.\\-]+$'
         name = self.le_name.text()
-        if name is None or name == "":
-            super(LoadWidget, self).reject()
+        if re.match(pattern, name):
+            super(LoadWidget, self).accept()
 
-        super(LoadWidget, self).accept()
+        super(LoadWidget, self).reject()
