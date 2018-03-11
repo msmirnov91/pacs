@@ -1,4 +1,5 @@
-from IO.models import create_db_table, LoadedData, Session
+import os
+from IO.models import create_db_table, LoadedData, Session, db_path
 
 
 class DbUtils:
@@ -32,7 +33,26 @@ class DbUtils:
         removes db file
         :return:
         """
-        pass
+        os.remove(db_path)
+        print("db was removed")
+
+    @classmethod
+    def rm(cls):
+        """
+        removes single row
+        :return:
+        """
+        print("Data or session must be removed?")
+
+        table_name = input().lower()
+
+        if table_name == "data":
+            table = LoadedData
+        elif table_name == "session":
+            table = Session
+        else:
+            print("unknown table")
+            return
 
     @classmethod
     def mrproper(cls):
@@ -40,7 +60,11 @@ class DbUtils:
         clears all db tables
         :return:
         """
-        pass
+        q1 = Session.delete()
+        q2 = LoadedData.delete()
+        q1.execute()
+        q2.execute()
+        print("db was cleared")
 
     @classmethod
     def mkdb(cls):
@@ -51,16 +75,19 @@ class DbUtils:
         create_db_table()
         print("db file and tables created")
 
+    @classmethod
+    def help(cls):
+        print("====================")
+        print("lsdb - shows all db instances")
+        print("rmdb - removes db file")
+        print("mrproper - clears all db tables")
+        print("mkdb - makes db file and creates needed tables")
+        print("rm - removes single row")
+        print("q - quit")
+        print("====================")
 
 if __name__ == "__main__":
-    print("DB CLI. Type command")
-    print("====================")
-    print("lsdb - shows all db instances")
-    print("rmdb - removes db file")
-    print("mrproper - clears all db tables")
-    print("mkdb - makes db file and creates needed tables")
-    print("q - quit")
-    print("====================")
+    print("Database CLI. Type command or 'help'")
     while True:
         cmd = input()
         if cmd == "q":

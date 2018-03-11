@@ -30,6 +30,8 @@ class StartDialog(QDialog):
         elif self.old_session_rb.isChecked():
             model = self.existing_sessions_list.model()
             if model.rowCount() == 0:
+                self.old_session_rb.setChecked(False)
+                self.new_session_rb.setChecked(True)
                 return
             self.new_session_gb.setEnabled(False)
             self.old_session_gb.setEnabled(True)
