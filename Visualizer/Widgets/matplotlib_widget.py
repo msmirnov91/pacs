@@ -7,8 +7,6 @@ from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 
 
 class MatplotlibWidget(QWidget):
-    saved_images = 0
-
     def __init__(self, parent=None):
         super(MatplotlibWidget, self).__init__(parent)
         self.ax = None
@@ -22,10 +20,17 @@ class MatplotlibWidget(QWidget):
 
         self.ax = self.figure.add_subplot(1, 1, 1)
 
-        self.image_name = None
+        self._image_name = None
         # self.saved_images = 0
 
         # self.redraw()
+
+    @property
+    def image_name(self):
+        return self._image_name
+
+    def set_image_name(self, name):
+        self._image_name = name
 
     def redraw(self):
         # discards the old graph
@@ -49,13 +54,6 @@ class MatplotlibWidget(QWidget):
 
     def set_title(self, title):
         self.figure.suptitle(title)
-
-    def get_image_name(self):
-        return "{}{}.png".format(self.image_name, self._get_saved_images_amount())
-
-    def _get_saved_images_amount(self):
-        type(self).saved_images += 1
-        return self.saved_images
 
 
 if __name__ == '__main__':

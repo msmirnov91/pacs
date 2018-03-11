@@ -30,11 +30,14 @@ class AbstractVisualizationTab(AbstractTab):
     def _update_tab(self):
         pass
 
-    def add_image_to_report(self, report_dir):
+    def add_image_to_report(self, report_dir, img_number):
         plot_widget = self.get_plot_widget()
-        img_name = plot_widget.get_image_name()
+        img_name = "{}{}.png".format(plot_widget.image_name, img_number)
         plot_widget.save_image(report_dir, img_name)
         return img_name
+
+    def get_plot_name(self):
+        return self.get_plot_widget().image_name
 
     def get_description_for_report(self):
         return None

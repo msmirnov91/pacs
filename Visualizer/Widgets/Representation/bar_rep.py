@@ -5,7 +5,7 @@ import numpy as np
 class Bar(MatplotlibWidget):
     def __init__(self, parent=None):
         super(Bar, self).__init__(parent)
-        self.image_name = "bar"
+        self.set_image_name("bar")
 
     def make_bars(self, bar_representation):
         """

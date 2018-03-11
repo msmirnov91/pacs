@@ -6,7 +6,7 @@ import sys
 class PieDiagramm(MatplotlibWidget):
     def __init__(self, parent=None):
         super(PieDiagramm, self).__init__(parent)
-        self.image_name = "pie"
+        self.set_image_name("pie")
 
     def __calculate_sizes(self):
         # FIXME: cant add int to tuples

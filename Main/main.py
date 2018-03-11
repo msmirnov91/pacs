@@ -212,7 +212,8 @@ class PACS(QMainWindow):
 
         if isinstance(current_widget, AbstractVisualizationTab):
             report_dir = self._recorder.get_record_dir()
-            img_name = current_widget.add_image_to_report(report_dir)
+            number = self._storage_manager.get_plot_number(current_widget.get_plot_name())
+            img_name = current_widget.add_image_to_report(report_dir, number)
             report_description = current_widget.get_description_for_report()
             self._recorder.add_record("Was saved {}.\n\tname: {}\n".format(report_description, img_name))
 

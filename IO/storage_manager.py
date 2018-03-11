@@ -55,3 +55,28 @@ class StorageManager(object):
         new_data.load_from_file(path, has_headers)
         self.store(new_data)
         return new_data
+
+    def get_plot_number(self, name):
+        # lack_of_the_time
+        if name == "scatter_plot":
+            number = self._session.plot_amount
+            self._session.plot_amount += 1
+        elif name == "bar":
+            number = self._session.bar_amount
+            self._session.bar_amount += 1
+        elif name == "bww":
+            number = self._session.bww_amount
+            self._session.bww_amount += 1
+        elif name == "matrix":
+            number = self._session.matrix_amount
+            self._session.matrix_amount += 1
+        elif name == "vector":
+            number = self._session.vector_amount
+            self._session.vector_amount += 1
+        elif name == "pie":
+            number = self._session.pie_amount
+            self._session.pie_amount += 1
+        else:
+            raise Exception("Wrong plot name")
+        self._session.save()
+        return number

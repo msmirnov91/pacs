@@ -96,9 +96,11 @@ class Visualizer(object):
 
     @classmethod
     def get_validity_vector(cls, data):
-        if not data.is_clusterized():
-            return MatrixRep()
         vector = MatrixRep()
+        vector.set_image_name("vector")
+
+        if not data.is_clusterized():
+            return vector
 
         matrix = []
         for i in range(0, data.clusters_amount()):
