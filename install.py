@@ -1,10 +1,8 @@
-import os
 import sys
 import time
 
-from IO import *
+from Main import *
 from IO.models import create_db_table
-from Recorder.recorder import Recorder
 
 
 def print_slowly(message, delay):
@@ -28,12 +26,15 @@ try:
     import matplotlib
     import numpy
     import peewee
+    import scipy
+    import sklearn
 except ImportError as error:
     print(error)
     print("Install needed module and try again")
     exit()
 
 create_db_table()
+os.makedirs(SESSION_DIR)
 
 print_success_report()
 
