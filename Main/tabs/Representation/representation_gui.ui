@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>981</width>
+    <width>1087</width>
     <height>599</height>
    </rect>
   </property>
@@ -32,6 +32,84 @@ QGroupBox::title {
      <property name="spacing">
       <number>6</number>
      </property>
+     <item row="0" column="2">
+      <widget class="QGroupBox" name="visualization_type">
+       <property name="maximumSize">
+        <size>
+         <width>212</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="title">
+        <string>Вид отображения</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QRadioButton" name="bww">
+          <property name="text">
+           <string>Пространственные 
+характеристики</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="dens_distribution">
+          <property name="text">
+           <string>Плотность
+распределения</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="color_matrix">
+          <property name="text">
+           <string>Матрица расстояний</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="validity_vector">
+          <property name="text">
+           <string>Валидность кластеров</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="0" column="1" rowspan="4">
+      <widget class="QGroupBox" name="plot">
+       <property name="minimumSize">
+        <size>
+         <width>600</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="title">
+        <string>Отображение</string>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0">
+         <layout class="QHBoxLayout" name="plot_layout"/>
+        </item>
+       </layout>
+      </widget>
+     </item>
      <item row="2" column="2">
       <widget class="QGroupBox" name="axis">
        <property name="maximumSize">
@@ -85,80 +163,24 @@ QGroupBox::title {
        </layout>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QGroupBox" name="visualization_type">
-       <property name="maximumSize">
-        <size>
-         <width>212</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
+     <item row="3" column="2">
+      <widget class="QGroupBox" name="groupBox">
        <property name="title">
-        <string>Вид отображения</string>
+        <string>Объединение кластеров</string>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <widget class="QRadioButton" name="bww">
-          <property name="text">
-           <string>Пространственные 
-характеристики</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="second_join_sb"/>
         </item>
-        <item>
-         <widget class="QRadioButton" name="dens_distribution">
-          <property name="text">
-           <string>Распределение 
-плотности</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QRadioButton" name="color_matrix">
-          <property name="text">
-           <string>Матрица расстояний</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QRadioButton" name="validity_vector">
-          <property name="text">
-           <string>Валидность кластеров</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="0" column="1" rowspan="4">
-      <widget class="QGroupBox" name="plot">
-       <property name="minimumSize">
-        <size>
-         <width>600</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="title">
-        <string>Отображение</string>
-       </property>
-       <property name="flat">
-        <bool>true</bool>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0">
-         <layout class="QHBoxLayout" name="plot_layout"/>
+         <widget class="QSpinBox" name="first_join_sb"/>
+        </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QPushButton" name="join_clusters_pb">
+          <property name="text">
+           <string>Объединить</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -178,20 +200,6 @@ QGroupBox::title {
         <string>Индексы валидности</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_5">
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="dunn_value">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="db_value">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="1">
          <widget class="QLineEdit" name="silhouette_value">
           <property name="enabled">
@@ -206,10 +214,24 @@ QGroupBox::title {
           </property>
          </widget>
         </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="db_value">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
            <string>Davies-Bouldin</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="dunn_value">
+          <property name="enabled">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -219,6 +241,46 @@ QGroupBox::title {
            <string>Silhouette</string>
           </property>
          </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="0" column="3" rowspan="3">
+      <widget class="QGroupBox" name="groupBox_2">
+       <property name="minimumSize">
+        <size>
+         <width>212</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>ПППР</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QTextEdit" name="assistant_te">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="3" column="3">
+      <widget class="QGroupBox" name="groupBox_3">
+       <property name="title">
+        <string>Расстояние между кластерами</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QListView" name="distances_list"/>
         </item>
        </layout>
       </widget>

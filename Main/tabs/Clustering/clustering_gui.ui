@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>516</width>
+    <width>602</width>
     <height>335</height>
    </rect>
   </property>
@@ -14,86 +14,43 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
-   <item row="1" column="1">
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="title">
-      <string>Параметры алгоритма</string>
+   <item row="3" column="2">
+    <widget class="QPushButton" name="evaluate_params_pb">
+     <property name="text">
+      <string>Подобрать параметры</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <layout class="QVBoxLayout" name="alg_params_layout"/>
-      </item>
-     </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="0" column="2" rowspan="3">
     <widget class="QGroupBox" name="groupBox_3">
      <property name="maximumSize">
       <size>
-       <width>309</width>
+       <width>250</width>
        <height>16777215</height>
       </size>
      </property>
      <property name="title">
-      <string>Данные для кластеризации</string>
+      <string>ПППР</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QCheckBox" name="cb_use_all">
-        <property name="text">
-         <string>Использовать все данные</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="gb_choose_data">
+       <widget class="QTextEdit" name="assistant_te">
         <property name="enabled">
          <bool>false</bool>
         </property>
-        <property name="title">
-         <string>Часть данных</string>
-        </property>
-        <layout class="QFormLayout" name="formLayout">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>Элементы</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="le_element_numbers">
-           <property name="toolTip">
-            <string>Например, &quot;3-20, 5, 7&quot;</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QListView" name="lv_coordinates"/>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>Координаты</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-        </layout>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
-   <item row="0" column="0" colspan="2">
+   <item row="3" column="0">
+    <widget class="QPushButton" name="pb_submit">
+     <property name="text">
+      <string>Кластеризовать</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="maximumSize">
       <size>
@@ -108,12 +65,17 @@
       <item row="0" column="0">
        <widget class="QComboBox" name="cb_alg_name"/>
       </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="pb_submit">
-        <property name="text">
-         <string>Кластеризовать</string>
-        </property>
-       </widget>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0" rowspan="2">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Параметры алгоритма</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <layout class="QVBoxLayout" name="alg_params_layout"/>
       </item>
      </layout>
     </widget>

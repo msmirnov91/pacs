@@ -9,11 +9,10 @@ from IO.gui.load_widget import LoadWidget
 from IO.gui.save_widget import SaveWidget
 from IO.storage_manager import StorageManager
 from Main import *
-from Main.tabs.Adviser.adviser_tab import AdviserTab
 from Main.tabs.Clustering.clustering_tab import ClusteringTab
 from Main.tabs.Comparison.comparison_tab import ComparisonTab
 from Main.tabs.Info.data_info_tab import DataInfoTab
-from Main.tabs.Plot.plot_tab import PlotTab
+from Main.tabs.Preprocessing.preprocessing_tab import PreprocessingTabMixin
 from Main.tabs.Representation.representation_tab import RepresentationTab
 from Main.tabs.abstract_visualization_tab import AbstractVisualizationTab
 from Processor.processor import Processor
@@ -34,11 +33,10 @@ class PACS(QMainWindow):
 
         self.tabs = [
             DataInfoTab(),
-            PlotTab(),
+            PreprocessingTabMixin(),
             ClusteringTab(),
-            ComparisonTab(),
             RepresentationTab(),
-            AdviserTab()
+            ComparisonTab()
         ]
 
         self.clustering_tab = self.tabs[2]

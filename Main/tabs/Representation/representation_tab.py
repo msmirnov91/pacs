@@ -7,7 +7,7 @@ class RepresentationTab(AbstractVisualizationTab):
     def __init__(self, parent=None):
         ui_file = "Representation/representation_gui.ui"
         super(RepresentationTab, self).__init__(ui_file, parent)
-        self.name = "Представление"
+        self.name = "Оценка результата"
 
         self.bww.toggled.connect(self._update_tab)
         self.dens_distribution.toggled.connect(self._update_tab)

@@ -6,7 +6,7 @@ class ComparisonTab(AbstractVisualizationTab):
         ui_file = "Comparison/comparison_gui.ui"
         super(ComparisonTab, self).__init__(ui_file, parent)
         self.need_two_data_sets = True
-        self.name = "Сравнение"
+        self.name = "Сравнение разбиений"
 
         self._data_2 = None
 

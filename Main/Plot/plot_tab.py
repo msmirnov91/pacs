@@ -1,10 +1,11 @@
 from Main.tabs.abstract_visualization_tab import AbstractVisualizationTab
 from Visualizer.Widgets.Plot.cluster_plot import ClusterPlot
+from Main import PACS_DIR
 
 
 class PlotTab(AbstractVisualizationTab):
     def __init__(self, parent=None):
-        ui_file = "Plot/plot.ui"
+        ui_file = PACS_DIR + "/Main//Plot/plot.ui"
         super(PlotTab, self).__init__(ui_file, parent)
         self.name = "Проекция"
 

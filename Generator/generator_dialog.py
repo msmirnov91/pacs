@@ -2,8 +2,7 @@ from PyQt4 import uic
 from PyQt4.QtGui import QDialog
 
 from Generator.generator import Generator
-from IO.gui.save_widget import SaveWidget
-from Main.tabs.Plot.plot_tab import PlotTab
+from Main.Plot.plot_tab import PlotTab
 
 
 class GeneratorDialog(QDialog):
