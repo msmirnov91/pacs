@@ -46,14 +46,20 @@ class Data(object):
         else:
             return self._data
 
-    def set_dataframe(self, new_dataframe):
+    def set_dataframe(self, new_dataframe, save_coordinates=False):
         # this method is needed for
         # making data modifications
         if not isinstance(new_dataframe, pd.DataFrame):
             new_dataframe = pd.DataFrame(new_dataframe)
+
         names = self.get_element_names()
         coordinates = self.get_coords_list()
+
         self._data = new_dataframe
+
+        if not save_coordinates:
+            coordinates = self._make_coordinate_names()
+
         self._data.columns = coordinates
         self._data[self.NAMES_COLUMN_NAME] = names
 
@@ -313,11 +319,13 @@ class Data(object):
         else:
             # NOW IT IS ACTUALLY LOADING RAW DATA
             self._data = pd.read_csv(path, header=None)
-            column_names = []
-            for i in range(0, len(self._data.columns)):
-                column_names.append("x{}".format(i))
-            self._data.columns = column_names
-
+            self._data.columns = self._make_coordinate_names()
             self._data[self.NAMES_COLUMN_NAME] = self._data.index.values
+
+    def _make_coordinate_names(self):
+        column_names = []
+        for i in range(0, len(self._data.columns)):
+            column_names.append("x{}".format(i))
+        return column_names
 
 

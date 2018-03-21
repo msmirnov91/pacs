@@ -9,6 +9,8 @@ from Main.tabs.adviser_tab_mixin import AdviserTabMixin
 from Main import PACS_DIR
 from Main.Plot.coords_plot_widget import CoordsPlot
 
+from Recorder.recorder import Recorder
+
 
 class PreprocessingTab(AbstractVisualizationTab, AdviserTabMixin):
     def __init__(self, data, parent=None):
@@ -40,6 +42,10 @@ class PreprocessingTab(AbstractVisualizationTab, AdviserTabMixin):
         self.lv_coordinates.setModel(model)
 
         self.plot.update_tab(self.data)
+
+        data_coords_amount = len(self.data.get_coords_list())
+        self.pc_amount.setRange(0, data_coords_amount)
+        self.pc_amount.setValue(0)
 
     def _enable_choose_data(self):
         if self.cb_use_all.isChecked():
@@ -84,13 +90,16 @@ class PreprocessingTab(AbstractVisualizationTab, AdviserTabMixin):
             self.data.select_elements(elements)
 
     def do_pca(self):
-        print(self.data)
-        pca = PCA(n_components=2)
+        components_amount = self.pc_amount.value()
+        pca = PCA(n_components=components_amount)
         df = self.data.get_dataframe()
         pca.fit(df)
         self.data.set_dataframe(pca.transform(df))
         self.update_tab()
-        print(self.data)
+
+        record_msg = "PCA.\n\tdata: {}\n\tn_components:{}\n".format(self.data.data_name,
+                                                                    components_amount)
+        Recorder.get_instance().add_record(record_msg)
 
     def normalize(self):
         pass
