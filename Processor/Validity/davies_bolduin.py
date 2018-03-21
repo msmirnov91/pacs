@@ -41,7 +41,7 @@ def r_ij(data, ci, cj):
     defined as sum of clusters sparsity divided by
     clusters dissimilarity
     """
-    return (s(data, ci) + s(data, cj))/d(data.cluster(ci), data.cluster(cj))
+    return (s(data, ci) + s(data, cj))/d(data, ci, cj)
 
 
 def s(data, cluster_label):
@@ -63,17 +63,14 @@ def s(data, cluster_label):
     return sum(distances) / data.amount_of_elements_in_cluster(cluster_label)
 
 
-def d(ci, cj):
+def d(data, ci, cj):
     """
     function identifies "dissimilarity" of two clusters
-    as minimum distance between elements of those clusters
+    as distance between centers of those clusters
     """
-    distances = []
+    if ci == cj:
+        return 0
 
-    for index, row in ci.iterrows():
-        for another_index, another_row in cj.iterrows():
-            dist = la.norm(row.as_matrix() - another_row.as_matrix())
-            if dist != 0:
-                distances.append(dist)
-
-    return min(distances)
+    center_1 = data.get_cluster_center(ci).as_matrix()
+    center_2 = data.get_cluster_center(cj).as_matrix()
+    return la.norm(center_1 - center_2)

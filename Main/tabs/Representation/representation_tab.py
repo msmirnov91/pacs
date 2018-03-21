@@ -9,17 +9,13 @@ class RepresentationTab(AbstractVisualizationTab):
         super(RepresentationTab, self).__init__(ui_file, data=data, parent=parent)
         self.name = "Оценка результата"
 
-        self.bww.toggled.connect(self.update_tab)
-        self.dens_distribution.toggled.connect(self.update_tab)
-        self.color_matrix.toggled.connect(self.update_tab)
-        self.validity_vector.toggled.connect(self.update_tab)
-        self.cluster_number.valueChanged.connect(self.update_tab)
+        self.bww.toggled.connect(self.change_plot)
+        self.dens_distribution.toggled.connect(self.change_plot)
+        self.color_matrix.toggled.connect(self.change_plot)
+        self.validity_vector.toggled.connect(self.change_plot)
+        self.cluster_number.valueChanged.connect(self.update_elements_list)
 
-    def update_tab(self):
-        if self.sender().parent() == self.visualization_type and not self.sender().isChecked():
-            # signal from released radiobutton
-            return
-
+    def change_plot(self):
         if self.bww.isChecked():
             new_widget = self.visualizer.get_bww(self.data)
         elif self.dens_distribution.isChecked():
@@ -32,6 +28,25 @@ class RepresentationTab(AbstractVisualizationTab):
             return
         self.change_visualization_widget_to(new_widget)
 
+    def update_elements_list(self):
+        model = QStandardItemModel(self.elements_list)
+        if self.data.is_clusterized() and self.data.has_names():
+            names_df = self.data.get_element_names(cluster=self.cluster_number.value())
+            for name in list(names_df):
+                item = QStandardItem(str(name))
+                model.appendRow(item)
+        else:
+            model.clear()
+
+        self.elements_list.setModel(model)
+
+    def update_tab(self):
+        if self.sender().parent() == self.visualization_type and not self.sender().isChecked():
+            # signal from released radiobutton
+            return
+
+        self.change_plot()
+
         dunn = self.processor.get_dunn(self.data)
         db = self.processor.get_db(self.data)
         silhouette = self.processor.get_silhouette(self.data)
@@ -43,16 +58,7 @@ class RepresentationTab(AbstractVisualizationTab):
         self.cluster_amount_display.setText(str(self.data.clusters_amount()))
         self.cluster_number.setRange(0, self.data.clusters_amount() - 1)
 
-        model = QStandardItemModel(self.elements_list)
-        if self.data.is_clusterized() and self.data.has_names():
-            names_df = self.data.get_element_names(cluster=self.cluster_number.value())
-            for name in list(names_df):
-                item = QStandardItem(str(name))
-                model.appendRow(item)
-        else:
-            model.clear()
-
-        self.elements_list.setModel(model)
+        self.update_elements_list()
 
     def get_description_for_report(self):
         if self.bww.isChecked():
