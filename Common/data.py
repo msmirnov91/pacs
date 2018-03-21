@@ -2,6 +2,7 @@ import copy
 
 import pandas as pd
 import numpy as np
+from numpy import linalg as la
 from scipy.spatial.distance import squareform, pdist
 
 from Common.metrics import euclidean_distance
@@ -252,6 +253,11 @@ class Data(object):
         for label in self.get_labels_list():
             np.append(centers, self.get_cluster_center(label).as_matrix())
         return centers
+
+    def get_distance(self, label_1, label_2):
+        center_1 = self.get_cluster_center(label_1).as_matrix()
+        center_2 = self.get_cluster_center(label_2).as_matrix()
+        return la.norm(center_1 - center_2)
 
     def get_cluster_column(self, label, coord):
         cluster = self.cluster(label)

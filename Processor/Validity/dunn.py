@@ -1,6 +1,3 @@
-from numpy import linalg as la
-
-
 def calculate_dunn(data):
     """
     eexample: https://simple.wikipedia.org/wiki/Dunn_index
@@ -27,10 +24,7 @@ def calculate_dunn(data):
     distances = []
     for label_1 in cluster_labels:
         for label_2 in cluster_labels:
-            center_1 = data.get_cluster_center(label_1).as_matrix()
-            center_2 = data.get_cluster_center(label_2).as_matrix()
-            distance = la.norm(center_1-center_2)
-            distances.append(distance)
+            distances.append(data.get_distance(label_1, label_2))
 
     distances = list(filter((0.0).__ne__, distances))
 

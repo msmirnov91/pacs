@@ -62,10 +62,39 @@ class RepresentationTab(AbstractVisualizationTab):
         self.second_join_sb.setRange(0, self.data.clusters_amount() - 1)
 
         self.update_elements_list()
+        self.update_cluster_distances()
 
     def join_clusters(self):
         self.data.join(self.first_join_sb.value(), self.second_join_sb.value())
         self.update_tab()
+
+    def update_cluster_distances(self):
+        model = QStandardItemModel(self.distances_list)
+        if not self.data.is_clusterized():
+            model.clear()
+            self.distances_list.setModel(model)
+            return
+
+        distances = []
+        list_elemnt_template = "{} - {}: {:3.2f}"
+        labels = self.data.get_labels_list()
+        if len(labels) == 1:
+            distances.append(list_elemnt_template.format(0, 0, 0))
+        else:
+            for i in range(0, len(labels)-1):
+                for j in range(1, len(labels)):
+                    label_1 = labels[i]
+                    label_2 = labels[j]
+                    if label_1 == label_2:
+                        continue
+
+                    distance = self.data.get_distance(label_1, label_2)
+                    distances.append(list_elemnt_template.format(label_1, label_2, distance))
+
+        for dist in distances:
+            item = QStandardItem(dist)
+            model.appendRow(item)
+        self.distances_list.setModel(model)
 
     def get_description_for_report(self):
         if self.bww.isChecked():
