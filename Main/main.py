@@ -14,7 +14,6 @@ from Main.tabs.Info.data_info_tab import DataInfoTab
 from Main.tabs.Preprocessing.preprocessing_tab import PreprocessingTab
 from Main.tabs.Representation.representation_tab import RepresentationTab
 from Main.tabs.abstract_visualization_tab import AbstractVisualizationTab
-from Processor.processor import Processor
 from Recorder.recorder import Recorder
 from Main.StartDialog.start_dialog import StartDialog
 from Common.data import Data
@@ -149,31 +148,6 @@ class PACS(QMainWindow):
         tab = self.tab_main.currentWidget()
         if not isinstance(tab, ComparisonTab):
             tab.update_tab()
-
-    def _reduce_data(self, coords, elements_descriptions):
-        if coords:
-            self._data_1.select_coordinates(coords)
-
-        if elements_descriptions:
-            elements = []
-
-            elements_descriptions = elements_descriptions.replace(" ", "")
-            elements_descriptions = elements_descriptions.split(",")
-            range_regexp = '\d\-\d'
-            digit_regexp = '\d'
-
-            for description in elements_descriptions:
-                if re.match(range_regexp, description):
-                    description = description.split("-")
-                    first_element = int(description[0])
-                    last_element = int(description[1])
-                    for i in range(first_element, last_element+1):
-                        elements.append(i)
-                elif re.match(digit_regexp, description):
-                    elements.append(int(description))
-
-            elements = list(set(elements))  # leave only unique elements
-            self._data_1.select_elements(elements)
 
     def save_curr_plot_for_report(self):
         current_widget_index = self.tab_main.currentIndex()

@@ -1,3 +1,5 @@
+import re
+
 from PyQt4.QtGui import QStandardItemModel, QStandardItem, QAbstractItemView
 
 from Main.tabs.abstract_visualization_tab import AbstractVisualizationTab
@@ -19,6 +21,7 @@ class PreprocessingTab(AbstractVisualizationTab, AdviserTabMixin):
         self.element_numbers = []
         self.lv_coordinates.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.cb_use_all.toggled.connect(self._enable_choose_data)
+        self.pb_select.clicked.connect(self.reduce_data)
 
     def update_tab(self):
         data_has_names = self.data.has_names()
@@ -49,12 +52,34 @@ class PreprocessingTab(AbstractVisualizationTab, AdviserTabMixin):
             coords_list.append(str(index.data()))
         return coords_list
 
-    def get_choosed_names(self):
-        return self.le_element_numbers.text()
-
     def reduce_data(self):
-        pass
+        coords = self.get_choosed_coords()
+        if coords:
+            self.data.select_coordinates(coords)
 
+        elements_descriptions = self.le_element_numbers.text()
+        if elements_descriptions:
+            elements = []
+
+            elements_descriptions = elements_descriptions.replace(" ", "")
+            elements_descriptions = elements_descriptions.split(",")
+            range_regexp = '\d\-\d'
+            digit_regexp = '\d'
+
+            for description in elements_descriptions:
+                if re.match(range_regexp, description):
+                    description = description.split("-")
+                    first_element = int(description[0])
+                    last_element = int(description[1])
+                    for i in range(first_element, last_element+1):
+                        elements.append(i)
+                elif re.match(digit_regexp, description):
+                    elements.append(int(description))
+
+            elements = list(set(elements))  # leave only unique elements
+            self.data.select_elements(elements)
+
+    # lack_of_the_time
     def get_description_for_report(self):
         return self.plot.get_description_for_report()
 

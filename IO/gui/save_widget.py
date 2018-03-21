@@ -11,12 +11,12 @@ class SaveWidget(QDialog):
     def __init__(self, data, parent=None):
         super(SaveWidget, self).__init__(parent)
         uic.loadUi("IO/gui/save_dialog.ui", self)
-        self.info_tab = DataInfoTab()
+        self.info_tab = DataInfoTab(data)
         self._data = data
 
         self.form_layout.addWidget(self.info_tab)
         self.info_tab.enable_fields()
-        self.info_tab.update_tab(self._data)
+        self.info_tab.update_tab()
 
     def get_name_and_comment(self):
         return self.info_tab.le_name.text(), self.info_tab.le_comment.text()
