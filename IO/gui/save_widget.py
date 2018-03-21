@@ -26,7 +26,6 @@ class SaveWidget(QDialog):
         name = self.info_tab.le_name.text()
 
         if re.match(pattern, name):
-            print("match")
             super(SaveWidget, self).accept()
             return
         super(SaveWidget, self).reject()

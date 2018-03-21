@@ -171,7 +171,7 @@
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
-          <widget class="QPushButton" name="pushButton_3">
+          <widget class="QPushButton" name="normalize_pb">
            <property name="text">
             <string>Нормировать</string>
            </property>

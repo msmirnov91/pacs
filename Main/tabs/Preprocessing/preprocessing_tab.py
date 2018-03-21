@@ -1,6 +1,7 @@
 import re
 
 from sklearn.decomposition import PCA
+from sklearn import preprocessing
 
 from PyQt4.QtGui import QStandardItemModel, QStandardItem, QAbstractItemView
 
@@ -28,6 +29,7 @@ class PreprocessingTab(AbstractVisualizationTab, AdviserTabMixin):
         self.pb_select.clicked.connect(self.reduce_data)
 
         self.pca_pb.clicked.connect(self.do_pca)
+        self.normalize_pb.clicked.connect(self.normalize)
 
     def update_tab(self):
         data_has_names = self.data.has_names()
@@ -102,7 +104,13 @@ class PreprocessingTab(AbstractVisualizationTab, AdviserTabMixin):
         Recorder.get_instance().add_record(record_msg)
 
     def normalize(self):
-        pass
+        x = self.data.get_dataframe()
+        new_df = preprocessing.MaxAbsScaler().fit_transform(x)
+        self.data.set_dataframe(new_df)
+        self.update_tab()
+
+        record_msg = "Scaling.\n\tdata: {}\n".format(self.data.data_name)
+        Recorder.get_instance().add_record(record_msg)
 
     # lack_of_the_time
     def get_description_for_report(self):
