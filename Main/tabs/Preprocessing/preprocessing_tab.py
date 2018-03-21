@@ -1,5 +1,6 @@
 import re
 
+import numpy as np
 from sklearn.decomposition import PCA
 from sklearn import preprocessing
 
@@ -11,6 +12,7 @@ from Main import PACS_DIR
 from Main.Plot.coords_plot_widget import CoordsPlot
 
 from Recorder.recorder import Recorder
+from Processor.processor import Processor
 
 
 class PreprocessingTab(AbstractVisualizationTab, AdviserTabMixin):
@@ -28,6 +30,7 @@ class PreprocessingTab(AbstractVisualizationTab, AdviserTabMixin):
         self.cb_use_all.toggled.connect(self._enable_choose_data)
         self.pb_select.clicked.connect(self.reduce_data)
 
+        self.remove_noise_pb.clicked.connect(self.remove_noise)
         self.pca_pb.clicked.connect(self.do_pca)
         self.normalize_pb.clicked.connect(self.normalize)
 
@@ -90,6 +93,56 @@ class PreprocessingTab(AbstractVisualizationTab, AdviserTabMixin):
 
             elements = list(set(elements))  # leave only unique elements
             self.data.select_elements(elements)
+
+    def remove_noise(self):
+        noise_percent = self.noise_amount.value()
+        """
+        https://github.com/alitouka/spark_dbscan/wiki/Choosing-parameters-of-DBSCAN-algorithm
+        
+        To find out the noise we can apply dbscan algorithm
+        to data. It will combine all noise objects in a special cluster.
+        The most tricky thing here is to convert noise
+        percent, estimated by user, to epsilon value for
+        dbscan algorithm.
+        To do it, we first obtain the distance matrix. Then we make
+        a list of minimum distances for each row (i.e. distances to
+        nearest neighbour). After ordering this list, we are able to
+        find the "threshold" nearest-neighbour distance - amount of all 
+        distances greater than it consists user-specified percent value
+        of distance list length. This "threshold" distance is the epsilon 
+        for dbscan.
+        To estimate min_points parameter, we go back to distance matrix and
+        count how many distances are less or equal to epsinon in each row. 
+        Than take average value of the list obtained on previous step.  
+        """
+        dist_matrix = self.data.get_distance_matrix()
+
+        # eliminate zeros
+        nonzero_dist_matrix = dist_matrix[np.nonzero(dist_matrix)]
+        nonzero_dist_matrix = nonzero_dist_matrix.reshape((dist_matrix.shape[0],
+                                                           dist_matrix.shape[1] - 1))
+
+        nearest_neighbour_distances = nonzero_dist_matrix.min(axis=1)
+        nearest_neighbour_distances.sort()
+        elements_amount = len(nearest_neighbour_distances)
+        threshold_distance_idx = int(elements_amount * (1 - noise_percent/100))
+        eps = nearest_neighbour_distances[threshold_distance_idx]
+
+        # get the amount of distances in each row less or equal to eps
+        # looks like not good solution
+        condition_matrix = nonzero_dist_matrix <= eps
+        distances_in_row = condition_matrix.sum(1)
+        min_points = sum(distances_in_row) / len(distances_in_row)
+
+        # lack_of_the_time
+        settings = {"eps": eps, "min_samples": min_points}
+        labels = Processor().get_cluster_labels(self.data, "dbscan", settings)
+        self.data.set_labels(labels)
+        self.data.remove_cluster(-1)
+        self.update_tab()
+
+        record_msg = "Remove noise.\n\tnoise amount: {}%\n".format(noise_percent)
+        Recorder.get_instance().add_record(record_msg)
 
     def do_pca(self):
         components_amount = self.pc_amount.value()

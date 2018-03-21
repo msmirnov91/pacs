@@ -286,9 +286,13 @@ class Data(object):
         return cluster[coord]
 
     def get_sigma(self, label, coord):
+        if label is None:
+            return self.get_dataframe().std() ** 2
         return self.get_cluster_column(label, coord).std() ** 2
 
     def get_mean(self, label, coord):
+        if label is None:
+            return self.get_dataframe().mean()
         return self.get_cluster_column(label, coord).mean()
 
     def get_peak_sigma(self, label, peak_type):
