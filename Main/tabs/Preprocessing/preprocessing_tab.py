@@ -32,10 +32,7 @@ class PreprocessingTab(AbstractVisualizationTab, AdviserTabMixin):
             model.appendRow(item)
         self.lv_coordinates.setModel(model)
 
-        if self.data is None:
-            self.pb_submit.setEnabled(False)
-        else:
-            self.pb_submit.setEnabled(True)
+        self.plot.update_tab(self.data)
 
     def _enable_choose_data(self):
         if self.cb_use_all.isChecked():
@@ -60,4 +57,12 @@ class PreprocessingTab(AbstractVisualizationTab, AdviserTabMixin):
 
     def get_description_for_report(self):
         return self.plot.get_description_for_report()
+
+    # lack_of_the_time
+    def add_image_to_report(self, rep_dir, number):
+        return self.plot.add_image_to_report(rep_dir, number)
+
+    # lack_of_the_time
+    def get_plot_name(self):
+        return self.plot.get_plot_name()
 

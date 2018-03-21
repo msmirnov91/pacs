@@ -13,7 +13,7 @@ class Data(object):
     NAMES_COLUMN_NAME = 'name'
 
     def __init__(self, name, comment='', alg_name='', alg_params=''):
-        self._data = None
+        self._data = pd.DataFrame()
         self.data_name = name
         self.user_comment = comment
         self.clustering_alg_name = alg_name

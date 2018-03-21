@@ -6,10 +6,15 @@ from Main import PACS_DIR
 class CoordsPlot(AbstractVisualizationTab):
     def __init__(self, parent=None):
         ui_file = PACS_DIR + "/Main//Plot/plot.ui"
-        super(CoordsPlot, self).__init__(ui_file, parent)
+        super(CoordsPlot, self).__init__(ui_file, parent=parent)
 
+        self.data = None
         self.cluster_plot = ClusterPlot()
         self.plot_layout.addWidget(self.cluster_plot)
+
+    def update_tab(self, data):
+        self.data = data
+        self._update_tab()
 
     def _update_tab(self):
         coordinates = self.data.get_coords_list()

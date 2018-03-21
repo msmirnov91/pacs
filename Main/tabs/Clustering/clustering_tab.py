@@ -35,6 +35,13 @@ class ClusteringTab(AbstractVisualizationTab):
         self.cb_alg_name.currentIndexChanged.connect(self.set_appropriate_settings_widget)
         self.pb_submit.clicked.connect(self.perform_algorithm)
 
+    def update_tab(self):
+        # lack_of_the_time
+        if self.data.data_name is '':  # it means we have no data selected
+            self.pb_submit.setEnabled(False)
+        else:
+            self.pb_submit.setEnabled(True)
+
     def set_appropriate_settings_widget(self):
         alg_name = self.cb_alg_name.currentText()
 
@@ -66,8 +73,8 @@ class ClusteringTab(AbstractVisualizationTab):
                 \tparameters: {}\n"""
 
         recorder = Recorder.get_instance()
-        recorder.add_record(record_msg.format(self._data_1.data_name,
-                                              self._data_1.get_coords_list(),
-                                              self._data_1.get_elements_names_string(),
-                                              self._data_1.clustering_alg_name,
-                                              self._data_1.clustering_alg_params))
+        recorder.add_record(record_msg.format(self.data.data_name,
+                                              self.data.get_coords_list(),
+                                              self.data.get_elements_names_string(),
+                                              self.data.clustering_alg_name,
+                                              self.data.clustering_alg_params))
