@@ -14,6 +14,7 @@ class RepresentationTab(AbstractVisualizationTab):
         self.color_matrix.toggled.connect(self.change_plot)
         self.validity_vector.toggled.connect(self.change_plot)
         self.cluster_number.valueChanged.connect(self.update_elements_list)
+        self.join_clusters_pb.clicked.connect(self.join_clusters)
 
     def change_plot(self):
         if self.bww.isChecked():
@@ -57,8 +58,14 @@ class RepresentationTab(AbstractVisualizationTab):
 
         self.cluster_amount_display.setText(str(self.data.clusters_amount()))
         self.cluster_number.setRange(0, self.data.clusters_amount() - 1)
+        self.first_join_sb.setRange(0, self.data.clusters_amount() - 1)
+        self.second_join_sb.setRange(0, self.data.clusters_amount() - 1)
 
         self.update_elements_list()
+
+    def join_clusters(self):
+        self.data.join(self.first_join_sb.value(), self.second_join_sb.value())
+        self.update_tab()
 
     def get_description_for_report(self):
         if self.bww.isChecked():

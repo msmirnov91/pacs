@@ -81,6 +81,14 @@ class Data(object):
     def remove_cluster(self, label):
         self._data = self._data.loc[~self._data.index.isin([label])]
 
+    def join(self, label_1, label_2):
+        if label_1 == label_2 or not self.is_clusterized():
+            return
+
+        index_as_list = self.get_data_labels().tolist()
+        new_index = list(map(lambda x: label_1 if x == label_2 else x, index_as_list))
+        self.set_labels(new_index)
+
     def select_coordinates(self, coordinates):
         if self.has_names():
             coordinates.append(self.NAMES_COLUMN_NAME)
