@@ -1,5 +1,7 @@
 import re
 
+from sklearn.decomposition import PCA
+
 from PyQt4.QtGui import QStandardItemModel, QStandardItem, QAbstractItemView
 
 from Main.tabs.abstract_visualization_tab import AbstractVisualizationTab
@@ -22,6 +24,8 @@ class PreprocessingTab(AbstractVisualizationTab, AdviserTabMixin):
         self.lv_coordinates.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.cb_use_all.toggled.connect(self._enable_choose_data)
         self.pb_select.clicked.connect(self.reduce_data)
+
+        self.pca_pb.clicked.connect(self.do_pca)
 
     def update_tab(self):
         data_has_names = self.data.has_names()
@@ -78,6 +82,18 @@ class PreprocessingTab(AbstractVisualizationTab, AdviserTabMixin):
 
             elements = list(set(elements))  # leave only unique elements
             self.data.select_elements(elements)
+
+    def do_pca(self):
+        print(self.data)
+        pca = PCA(n_components=2)
+        df = self.data.get_dataframe()
+        pca.fit(df)
+        self.data.set_dataframe(pca.transform(df))
+        self.update_tab()
+        print(self.data)
+
+    def normalize(self):
+        pass
 
     # lack_of_the_time
     def get_description_for_report(self):

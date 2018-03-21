@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1087</width>
-    <height>599</height>
+    <height>672</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -61,8 +61,7 @@ QGroupBox::title {
         <item>
          <widget class="QRadioButton" name="dens_distribution">
           <property name="text">
-           <string>Плотность
-распределения</string>
+           <string>Распределение</string>
           </property>
          </widget>
         </item>
@@ -77,6 +76,27 @@ QGroupBox::title {
          <widget class="QRadioButton" name="validity_vector">
           <property name="text">
            <string>Валидность кластеров</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="scatter_plot">
+          <property name="text">
+           <string>График рассеяния</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="silhouette_plot">
+          <property name="text">
+           <string>Силуэт</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="clusters_pie">
+          <property name="text">
+           <string>Мощность кластеров</string>
           </property>
          </widget>
         </item>

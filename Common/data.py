@@ -46,6 +46,17 @@ class Data(object):
         else:
             return self._data
 
+    def set_dataframe(self, new_dataframe):
+        # this method is needed for
+        # making data modifications
+        if not isinstance(new_dataframe, pd.DataFrame):
+            new_dataframe = pd.DataFrame(new_dataframe)
+        names = self.get_element_names()
+        coordinates = self.get_coords_list()
+        self._data = new_dataframe
+        self._data.columns = coordinates
+        self._data[self.NAMES_COLUMN_NAME] = names
+
     def _drop_labels(self):
         # TODO: check this code. may contain mistakes
         if self.LABELS_COLUMN_NAME in self._data.columns:
