@@ -52,16 +52,21 @@ class Data(object):
         if not isinstance(new_dataframe, pd.DataFrame):
             new_dataframe = pd.DataFrame(new_dataframe)
 
-        names = self.get_element_names()
+        names = list(self.get_element_names())
         coordinates = self.get_coords_list()
+        if self.is_clusterized():
+            labels = self.get_data_labels()
+        else:
+            labels = None
 
         self._data = new_dataframe
-
         if not save_coordinates:
             coordinates = self._make_coordinate_names()
 
         self._data.columns = coordinates
         self._data[self.NAMES_COLUMN_NAME] = names
+        if labels is not None:
+            self.set_labels(labels)
 
     def _drop_labels(self):
         # TODO: check this code. may contain mistakes
