@@ -1,4 +1,3 @@
-import copy
 import re
 
 from PyQt4 import uic
@@ -12,12 +11,13 @@ from Main import *
 from Main.tabs.Clustering.clustering_tab import ClusteringTab
 from Main.tabs.Comparison.comparison_tab import ComparisonTab
 from Main.tabs.Info.data_info_tab import DataInfoTab
-from Main.tabs.Preprocessing.preprocessing_tab import PreprocessingTabMixin
+from Main.tabs.Preprocessing.preprocessing_tab import PreprocessingTab
 from Main.tabs.Representation.representation_tab import RepresentationTab
 from Main.tabs.abstract_visualization_tab import AbstractVisualizationTab
 from Processor.processor import Processor
 from Recorder.recorder import Recorder
 from Main.StartDialog.start_dialog import StartDialog
+from Common.data import Data
 
 
 class PACS(QMainWindow):
@@ -31,34 +31,31 @@ class PACS(QMainWindow):
         self._recorder = None
         self._storage_manager = None
 
+        self._data_1 = Data('')
+        self._data_2 = Data('')
+
         self.tabs = [
-            DataInfoTab(),
-            PreprocessingTabMixin(),
-            ClusteringTab(),
-            RepresentationTab(),
+            DataInfoTab(self._data_1),
+            PreprocessingTab(self._data_1),
+            ClusteringTab(self._data_1),
+            RepresentationTab(self._data_1),
             ComparisonTab()
         ]
 
-        self.clustering_tab = self.tabs[2]
-
         for tab in self.tabs:
             self.tab_main.addTab(tab, tab.name)
-
-        self._data_1 = None
-        self._data_2 = None
 
         self.list_data.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.connect_signals_and_slots()
 
     def connect_signals_and_slots(self):
+        self.tab_main.currentChanged.connect(self.update_current_tab)
         self.btn_select.clicked.connect(self.select_data)
         self.btn_load_new.clicked.connect(self.load_new_data)
         self.btn_generate.clicked.connect(self.generate_data)
         self.btn_save.clicked.connect(self.save_result)
         self.btn_remove.clicked.connect(self.remove_data)
         self.actionSave_image_for_report.triggered.connect(self.save_curr_plot_for_report)
-
-        self.tabs[2].clusterize_data.connect(self.clusterize_data)
 
     def load_new_data(self):
         load_widget = LoadWidget()
@@ -76,11 +73,14 @@ class PACS(QMainWindow):
         items_amount = len(selected_items)
 
         if items_amount == 1:
-            self._data_1 = self._storage_manager.get_loaded(selected_items[0].data())
+            loaded = self._storage_manager.get_loaded(selected_items[0].data())
+            self._data_1.copy(loaded)
             self._data_2 = None
         elif items_amount == 2:
-            self._data_1 = self._storage_manager.get_loaded(selected_items[0].data())
-            self._data_2 = self._storage_manager.get_loaded(selected_items[1].data())
+            loaded_1 = self._storage_manager.get_loaded(selected_items[0].data())
+            loaded_2 = self._storage_manager.get_loaded(selected_items[1].data())
+            self._data_1.copy(loaded_1)
+            self._data_2.copy(loaded_2)
         else:
             return
 
@@ -95,7 +95,7 @@ class PACS(QMainWindow):
                                     title_parts[1], self._title_delimiter,
                                     self._data_1.data_name)
         self.setWindowTitle(title)
-        self.update_tabs()
+        self.update_current_tab()
 
     def generate_data(self):
         generate_dialog = GeneratorDialog()
@@ -137,35 +137,6 @@ class PACS(QMainWindow):
 
         self.update_data_list()
 
-    def clusterize_data(self):
-        if self._data_1 is None:
-            return
-
-        if not self.clustering_tab.use_all_data():
-            self._reduce_data(self.clustering_tab.get_choosed_coords(),
-                              self.clustering_tab.get_choosed_names())
-
-        alg, params = self.clustering_tab.get_algorithm_and_settings()
-        labels = Processor().get_cluster_labels(self._data_1, alg, params)
-        self._data_1.set_labels(labels)
-        self._data_1.clustering_alg_name = alg
-        self._data_1.clustering_alg_params = str(params)
-
-        # lack_of_the_time
-        record_msg = """Clustered data:
-        \tdata: {}
-        \tcoordinates: {}
-        \telements: {}
-        \talgorithm: {}
-        \tparameters: {}\n"""
-
-        self._recorder.add_record(record_msg.format(self._data_1.data_name,
-                                                    self._data_1.get_coords_list(),
-                                                    self._data_1.get_elements_names_string(),
-                                                    self._data_1.clustering_alg_name,
-                                                    self._data_1.clustering_alg_params))
-        self.update_tabs()
-
     def update_data_list(self):
         data_list_model = QStandardItemModel(self.list_data)
         names = self._storage_manager.get_all_names()
@@ -174,19 +145,10 @@ class PACS(QMainWindow):
             data_list_model.appendRow(item)
         self.list_data.setModel(data_list_model)
 
-    def update_tabs(self):
-        for tab in self.tabs:
-            if not tab.is_visualization_tab:
-                continue
-
-            # to prevent data corrupting
-            data_1_copy = copy.deepcopy(self._data_1)
-
-            if tab.need_two_data_sets:
-                data_2_copy = copy.deepcopy(self._data_2)
-                tab.update_tab(self._data_1, data_2_copy)
-            else:
-                tab.update_tab(data_1_copy)
+    def update_current_tab(self):
+        tab = self.tab_main.currentWidget()
+        if not isinstance(tab, ComparisonTab):
+            tab.update_tab()
 
     def _reduce_data(self, coords, elements_descriptions):
         if coords:

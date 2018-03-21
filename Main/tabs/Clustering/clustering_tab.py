@@ -1,19 +1,19 @@
-from PyQt4.QtCore import pyqtSignal
-
 from Main.tabs.abstract_visualization_tab import AbstractVisualizationTab
 # TODO: put them all in one module
 from Main.tabs.Clustering.Settings.kmeans.kmeans_settings import KmeansSettings
 from Main.tabs.Clustering.Settings.dbscan.dbscan_settings import DbscanSettings
 
+from Processor.processor import Processor
+from Recorder.recorder import Recorder
+
 
 # maybe it is not good idea to make this tab an
 # instance of AbstractVisualizationTab
 class ClusteringTab(AbstractVisualizationTab):
-    clusterize_data = pyqtSignal()
-
-    def __init__(self, parent=None):
+    def __init__(self, data, parent=None):
+        self.data = data
         ui_file = "Clustering/clustering_gui.ui"
-        super(ClusteringTab, self).__init__(ui_file, parent)
+        super(ClusteringTab, self).__init__(ui_file, data=data, parent=parent)
 
         self.name = "Кластеризация"
 
@@ -33,7 +33,7 @@ class ClusteringTab(AbstractVisualizationTab):
         self.set_appropriate_settings_widget()
 
         self.cb_alg_name.currentIndexChanged.connect(self.set_appropriate_settings_widget)
-        self.pb_submit.clicked.connect(self.emit_clusterize_signal)
+        self.pb_submit.clicked.connect(self.perform_algorithm)
 
     def set_appropriate_settings_widget(self):
         alg_name = self.cb_alg_name.currentText()
@@ -47,9 +47,27 @@ class ClusteringTab(AbstractVisualizationTab):
             self.settings_widget = settings_widget
             self._change_widget_on_layout_to(self.alg_params_layout, settings_widget)
 
-    def get_algorithm_and_settings(self):
-        alg_name = self.cb_alg_name.currentText()
-        return alg_name, self.settings_widget.get_settings()
+    def perform_algorithm(self):
+        if self.data is None:
+            return
 
-    def emit_clusterize_signal(self):
-        self.clusterize_data.emit()
+        alg = self.cb_alg_name.currentText()
+        params = self.settings_widget.get_settings()
+        labels = Processor().get_cluster_labels(self.data, alg, params)
+        self.data.set_labels(labels)
+        self.data.clustering_alg_name = alg
+        self.data.clustering_alg_params = str(params)
+
+        record_msg = """Clustered data:
+                \tdata: {}
+                \tcoordinates: {}
+                \telements: {}
+                \talgorithm: {}
+                \tparameters: {}\n"""
+
+        recorder = Recorder.get_instance()
+        recorder.add_record(record_msg.format(self._data_1.data_name,
+                                              self._data_1.get_coords_list(),
+                                              self._data_1.get_elements_names_string(),
+                                              self._data_1.clustering_alg_name,
+                                              self._data_1.clustering_alg_params))

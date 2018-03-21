@@ -27,9 +27,16 @@ class Recorder(object):
         logging.basicConfig(filename=file_name, level=logging.INFO, format='%(message)s')
         self.add_record(record_msg)
 
+        # lack_of_the_time
+        Recorder.__instance = self
+
     @classmethod
     def add_record(cls, message):
         logging.info(message)
 
     def get_record_dir(self):
         return self.REPORTS_DIR
+
+    @classmethod
+    def get_instance(cls):
+        return Recorder.__instance

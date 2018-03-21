@@ -3,17 +3,16 @@ from Visualizer.Widgets.Plot.cluster_plot import ClusterPlot
 from Main import PACS_DIR
 
 
-class PlotTab(AbstractVisualizationTab):
+class CoordsPlot(AbstractVisualizationTab):
     def __init__(self, parent=None):
         ui_file = PACS_DIR + "/Main//Plot/plot.ui"
-        super(PlotTab, self).__init__(ui_file, parent)
-        self.name = "Проекция"
+        super(CoordsPlot, self).__init__(ui_file, parent)
 
         self.cluster_plot = ClusterPlot()
         self.plot_layout.addWidget(self.cluster_plot)
 
     def _update_tab(self):
-        coordinates = self._data.get_coords_list()
+        coordinates = self.data.get_coords_list()
 
         self.x1.clear()
         self.x2.clear()
@@ -39,10 +38,10 @@ class PlotTab(AbstractVisualizationTab):
         if x == '' or y == '':
             return
 
-        self.change_visualization_widget_to(self.visualizer.get_cluster_plot(self._data, x, y))
+        self.change_visualization_widget_to(self.visualizer.get_cluster_plot(self.data, x, y))
 
     def get_description_for_report(self):
-        description = "scatter plot of '{}' on axis {}, {}".format(self._data.data_name,
+        description = "scatter plot of '{}' on axis {}, {}".format(self.data.data_name,
                                                                    self.x1.currentText(),
                                                                    self.x2.currentText())
         return description

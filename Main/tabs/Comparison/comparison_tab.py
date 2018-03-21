@@ -10,7 +10,9 @@ class ComparisonTab(AbstractVisualizationTab):
 
         self._data_2 = None
 
-    def update_tab(self, data1, data2):
+    def update_tab(self):
+        data1 = data2 = None
+
         if data1 is None or data2 is None:
             return
         self._data = data1

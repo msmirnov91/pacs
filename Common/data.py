@@ -1,3 +1,5 @@
+import copy
+
 import pandas as pd
 import numpy as np
 from scipy.spatial.distance import squareform, pdist
@@ -18,10 +20,20 @@ class Data(object):
         self.clustering_alg_params = alg_params
 
     def __str__(self):
-        return "===DATA OBJECT===\n" + str(self._data) + "\n================="
+        return "===DATA OBJECT===\n" + str(self._data) + "\n=================\n" + str(id(self))
+
+    def copy(self, data):
+        self._data = copy.deepcopy(data.get_data())
+        self.data_name = data.data_name
+        self.user_comment = data.user_comment
+        self.clustering_alg_name = data.clustering_alg_name
+        self.clustering_alg_params = data.clustering_alg_params
 
     def set_data(self, new_data):
         self._data = new_data
+
+    def get_data(self):
+        return self._data
 
     def get_dataframe(self):
         # this method is used by

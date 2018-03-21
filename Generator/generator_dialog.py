@@ -2,14 +2,14 @@ from PyQt4 import uic
 from PyQt4.QtGui import QDialog
 
 from Generator.generator import Generator
-from Main.Plot.plot_tab import PlotTab
+from Main.Plot.coords_plot_widget import CoordsPlot
 
 
 class GeneratorDialog(QDialog):
     def __init__(self, parent=None):
         super(GeneratorDialog, self).__init__(parent)
         uic.loadUi("Generator/generator_dialog.ui", self)
-        self.plot_tab = PlotTab()
+        self.plot_tab = CoordsPlot()
         self._data = None
 
         self._description = None
