@@ -93,6 +93,7 @@ class PreprocessingTab(AbstractVisualizationTab, AdviserTabMixin):
 
             elements = list(set(elements))  # leave only unique elements
             self.data.select_elements(elements)
+        self.update_tab()
 
     def remove_noise(self):
         noise_percent = self.noise_amount.value()
